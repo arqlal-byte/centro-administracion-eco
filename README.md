@@ -1,19 +1,31 @@
-# Centro de Administración ECO · aplicación web en GitHub Pages
+# Centro de Administración ECO · GitHub Pages · v0.4
 
-**Estado:** prototipo funcional en validación. Google Sheets seguirá como base oficial; GitHub Pages publica la aplicación y conserva su historial de código.
+**Estado:** prototipo funcional en validación operativa. Este repositorio es la interfaz y el motor de consulta del Centro de Administración ECO. **Google Sheets y Drive continúan como fuentes oficiales.** La aplicación original de Google y sus bases no fueron alteradas.
 
-**Web:** https://arqlal-byte.github.io/centro-administracion-eco/
+## Fase 1: consulta segura a fuentes oficiales
 
-## Estructura
+La interfaz consulta, por medio de una conexión protegida, el Catálogo de Líderes, resultados publicados de Evaluación 2026, actividades de desarrollo, especiales, asignaciones, cumplimientos y actividades familiares. La respuesta del servicio está restringida a RH mediante usuario y contraseña. No expone credenciales ni identificadores de bases privadas en este repositorio.
 
-- `index.html`, `app-eco.js`, `motor-eco.js`: interfaz y motor de diagnóstico E1–E20, ciclo y reglas confirmadas.
-- `datos-demo.js`: únicamente datos sintéticos para validación visual.
-- `eco-config.js`, `eco-bridge-client.js` y `eco-admin-live.js`: conexión protegida y acceso de RH. Cuando se activa `mode:'live'` con `bridgeUrl`, ninguna nómina se consulta antes de autenticar al administrador.
+El código de conexión privada (`Code.gs.txt` y `Bridge.html.txt`) **no se publica aquí**; se conserva en el paquete de implementación y se despliega con una identidad autorizada sobre Google Sheets. Su publicación requiere autorización y configuración manual en Google. Este backend no constituye otra aplicación dirigida a usuarios.
 
-**La consulta administrativa real está protegida por un usuario y una contraseña establecidos en el backend privado.** La contraseña nunca se envía a GitHub ni se guarda en el navegador de manera persistente. Al cerrar sesión se limpian los datos mostrados.
+**No se habilitan escrituras** a Sheets, asignación de actividades ni validación de evidencias en esta primera fase.
 
-## Pendientes funcionales
+## Archivos publicados
 
-Asignaciones por RH, activación/desactivación de actividades, envío de mensajes, seguimiento histórico por ciclo y validaciones con escritura requieren desarrollo y pruebas específicas, preservando la propiedad de cada hoja. No afirmar que esas operaciones funcionan en la versión actual.
+- `index.html`: interfaz administrativa, login y botón para cerrar sesión.
+- `app-eco.js`: consultas, diagnóstico, vistas y aviso de estado de fuentes.
+- `motor-eco.js`: reglas y simulaciones E1–E20.
+- `eco-admin-live.js`: acceso RH y eliminación del contenido privado al cerrar sesión.
+- `eco-bridge-client.js`: cliente de transporte con Apps Script; sin contraseñas.
+- `eco-config.js`: la configuración pública mantiene `mode: 'demo'` y `bridgeUrl: ''` hasta verificar la conexión real.
+- `datos-demo.js`: registros sintéticos empleados únicamente en demostración.
 
-La configuración pública se mantiene en modo demostración hasta habilitar el conector privado. No copiar el backend ni claves al repositorio público.
+## Activación pendiente
+
+Requiere desplegar el servicio protegido, comprobar la autorización de RH y facilitar su URL `/exec`. **Nunca** publicar contraseñas ni hojas confidenciales. Una vez probada la conexión, se podrá activar `mode:'live'` en `eco-config.js` y configurar la URL pública del servicio. **Los datos oficiales nunca se copian a GitHub.**
+
+## Observaciones
+
+En la copia consultada del Plan de Desarrollo ECO, las actividades de reforzamiento están inactivas. El sistema presentará el estado real y advertirá cuando no haya actividades habilitadas para el ciclo. Nunca cambia por sí solo el campo «Activo».
+
+Pruebas locales: 26 comprobaciones del backend con datos sintéticos y pruebas de interfaz responsiva en tres tamaños. **No equivale a validación con Sheets reales ni del despliegue público.**
