@@ -8,9 +8,9 @@ const state={datos:window.DatosDemoECO,modoDatos:'DATOS_SINTETICOS',diagnostico:
 const titles={diagnostico:['Motor de diagnóstico','Analiza las evaluaciones, compara criterios de asignación y visualiza las actividades correspondientes.'],catalogos:['Catálogos de actividades','Consulta la publicación de actividades del Editor Modelo Cultural y del programa familiar.'],criterios:['Reglas de asignación','Diferencia los criterios documentados y las nuevas alternativas, sin modificar registros.']};
 function cfg(){return MOTOR.configurar({modo:$('modo').value,umbral:$('umbral').value,cantidadMenores:$('cantidadMenores').value,ciclo:$('ciclo').value});}
 function isReal(){return state.modoDatos==='GOOGLE_SHEETS_LECTURA';}
-function updateSource(){const tag=$('sourceTag');tag.className='viewtag'+(isReal()?'':' demo');tag.textContent=isReal()?'Google Sheets · lectura autenticada': 'Demostración · datos ficticios';
+function updateSource(){const tag=$('sourceTag');tag.className='viewtag'+(isReal()?'':' demo');tag.textContent=isReal()?'Google Sheets · gestión RH': 'Demostración · datos ficticios';
  const aviso=$('notice');aviso.innerHTML=isReal()
- ? '<strong>Consulta autenticada activa.</strong> Información oficial de Google Sheets. Solo lectura: no se modifican actividades, asignaciones ni cumplimientos.'
+ ? '<strong>Consulta autenticada activa.</strong> Información oficial de Google Sheets. Confirmación de actividades por RH según su requisito. Catálogos y asignaciones se conservan.'
  : '<strong>Datos ficticios.</strong> Esta demostración utiliza registros sintéticos: no muestra resultados reales de colaboradores ni modifica Google Sheets. Las cifras difieren de las bases operativas.';
  if(isReal()) {
    const d=state.diagnostico||{};
@@ -39,7 +39,7 @@ function actividadHTML(arr, type){if(!arr.length)return '<div class="empty">'+(
  type==='familiares'?'No hay invitaciones familiares abiertas.':
  type==='especiales'?'No hay actividades especiales asignadas por RH y habilitadas.':
  'No hay actividades de reforzamiento habilitadas para estos elementos y ciclo.')+'</div>';
- return arr.map(a=>'<div class="actrow"><div><b>'+e(a.titulo)+'</b><small>'+e(a.id)+' · '+e(a.tipo||a.categoria)+(a.elemento?' · Elemento '+e(a.elemento):'')+(a.ciclo?' · '+e(a.ciclo):'')+'</small></div><span class="state '+(a.completada?'done':'')+'">'+(type==='familiares'?'Invitación abierta':a.completada?'Completada':'Pendiente')+'</span></div>').join('');}
+ return arr.map(a=>'<div class="actrow"><div><b>'+e(a.titulo)+'</b><small>'+e(a.id)+' · '+e(a.tipo||a.categoria)+(a.elemento?' · Elemento '+e(a.elemento):'')+(a.ciclo?' · '+e(a.ciclo):'')+(a.tipoValidacion?' · '+e(a.tipoValidacion):'')+'</small>'+((isReal()&&cfg().modo==='elementos'&&cfg().umbral===4&&cfg().ciclo===2026&&type!=='familiares'&&!a.completada)?'<button class="eco-confirmar-btn" type="button" data-eco-confirmar="'+e(a.id)+'" data-eco-nomina="'+e(state.persona)+'">Revisar y confirmar</button>':'')+'</div><span class="state '+(a.completada?'done':'')+'">'+(type==='familiares'?'Invitación abierta':a.completada?'Completada':'Pendiente')+'</span></div>').join('');}
 function resumenComparativo(resultado){const modos=[['elementos','Por cada elemento bajo el umbral'],['legado','Código documental anterior'],['menores','N elementos menores']];const config=cfg();
  return '<div class="compare"><h4>Comparación de criterios · Solo simulación</h4><div class="tableWrap"><table><thead><tr><th>Escenario</th><th>Elementos elegidos</th></tr></thead><tbody>'+modos.map(([modo,label])=>{const d=MOTOR.diagnosticar(resultado,{...config,modo});return '<tr><td>'+e(label)+'</td><td>'+e(d.elementos.map(x=>'E'+x.elemento).join(', ')||'Ninguno')+'</td></tr>';}).join('')+'</tbody></table></div></div>';}
 function renderDetalle(){const nomina=state.persona;const vista=MOTOR.vistaPersona(state.datos,nomina,cfg());if(!vista){$('detalleNombre').textContent='Selecciona un colaborador';$('detalleMeta').textContent='La información de diagnóstico aparecerá aquí.';$('detalle').innerHTML='<div class="empty">Selecciona un registro para consultar sus resultados.</div>';return;}
@@ -53,7 +53,7 @@ function renderDetalle(){const nomina=state.persona;const vista=MOTOR.vistaPerso
  body+='<div class="smCard" style="margin-top:15px"><h4>Invitaciones abiertas para la familia · '+familiares.length+'</h4><p class="note">Son para todos los colaboradores y sus familias; no dependen de evaluación ni de una asignación por RH.</p>'+actividadHTML(familiares,'familiares')+'</div>';
  if(d.tieneResultados)body+=resumenComparativo((state.datos.resultados||[]).find(r=>String(r.nomina)===String(nomina)&&Number(r.ciclo||2026)===cfg().ciclo));
  body+='<p class="note">De '+e(vista.posiblesRefuerzo)+' actividades de reforzamiento identificadas para los elementos evaluados y el ciclo seleccionado, '+e(vista.refuerzoNoVisible)+' están deshabilitadas. No se sustituyen por otras.</p>';
- body+='<p class="note">Las especiales las asigna RH de manera individual, a grupos seleccionados o a todos, mediante registros por nómina. Las familiares son invitaciones abiertas para todos. Las actividades deshabilitadas no aparecen. Nada se guardó.</p>';
+ body+='<p class="note">Las especiales las asigna RH de manera individual, a grupos seleccionados o a todos, mediante registros por nómina. Las familiares son invitaciones abiertas para todos. Las actividades deshabilitadas no aparecen. Cambiar una simulación no guarda registros; una confirmación requiere revisar su requisito y guardarla expresamente.</p>';
  $('detalle').innerHTML=body;
 }
 function renderCatalog(){const cfgActual=cfg();const arr=state.datos[state.catalog]||[];
@@ -73,6 +73,7 @@ for(const b of document.querySelectorAll('[data-tab]'))b.addEventListener('click
 for(const b of document.querySelectorAll('[data-catalog]'))b.addEventListener('click',()=>{state.catalog=b.getAttribute('data-catalog');renderCatalog();});
 for(const id of ['modo','umbral','cantidadMenores','ciclo'])$(id).addEventListener('input',()=>{renderConfig();renderMetricas();renderDetalle();renderCatalog();});
 $('busqueda').addEventListener('input',renderPersonas);
+window.addEventListener('eco-confirmacion-guardada',async()=>{try{const r=await window.EcoAdminLive.request('adminConsultarDatosECO',[]);state.datos=r.datos;state.diagnostico=r.diagnostico;renderAll();}catch(err){state.error=err.message;updateSource();}});
 async function init(){
  if (window.EcoAdminLive && window.EcoAdminLive.active()) {
    window.EcoAdminLive.start(function(datos,diagnostico){
