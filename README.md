@@ -1,31 +1,37 @@
-# Centro de Administración ECO · GitHub Pages · v0.4
+# Centro de Administración ECO · v0.5
 
-**Estado:** prototipo funcional en validación operativa. Este repositorio es la interfaz y el motor de consulta del Centro de Administración ECO. **Google Sheets y Drive continúan como fuentes oficiales.** La aplicación original de Google y sus bases no fueron alteradas.
+Prototipo funcional en validación operativa. Google Sheets y Drive permanecen como fuentes oficiales; no sustituye las aplicaciones de Google existentes.
 
-## Fase 1: consulta segura a fuentes oficiales
+## Funciones
 
-La interfaz consulta, por medio de una conexión protegida, el Catálogo de Líderes, resultados publicados de Evaluación 2026, actividades de desarrollo, especiales, asignaciones, cumplimientos y actividades familiares. La respuesta del servicio está restringida a RH mediante usuario y contraseña. No expone credenciales ni identificadores de bases privadas en este repositorio.
+Consulta RH autenticada de catálogo, resultados 2026, actividades, asignaciones y cumplimientos. Confirmación individual de actividades según su requisito oficial: realización sin validación adicional, respuesta/reflexión, clave, QR/enlace, evidencia fotográfica, documento, acreditación RH y constancia del jefe directo.
 
-El código de conexión privada (`Code.gs.txt` y `Bridge.html.txt`) **no se publica aquí**; se conserva en el paquete de implementación y se despliega con una identidad autorizada sobre Google Sheets. Su publicación requiere autorización y configuración manual en Google. Este backend no constituye otra aplicación dirigida a usuarios.
+El servidor comprueba nuevamente identidad, asignación, publicación activa y elegibilidad 2026. Los escenarios de comparación, otros ciclos y cambios del umbral son simulaciones y no permiten confirmar. Las invitaciones familiares y la validación automática entre aplicaciones no se acreditan manualmente.
 
-**No se habilitan escrituras** a Sheets, asignación de actividades ni validación de evidencias en esta primera fase.
+## Datos y seguridad
 
-## Archivos publicados
+Las respuestas se registran en la hoja oficial de respuestas; las evidencias en una carpeta privada de Drive creada al primer envío y referenciada desde la hoja oficial de evidencias. El cumplimiento se registra después de guardar el requisito. Se conserva origen, responsable y bitácora administrativa. Las operaciones repetidas usan un identificador para recuperar interrupciones sin duplicar el cumplimiento. Las operaciones terminadas se retienen siete días en propiedades privadas; las incompletas quedan para recuperación.
 
-- `index.html`: interfaz administrativa, login y botón para cerrar sesión.
-- `app-eco.js`: consultas, diagnóstico, vistas y aviso de estado de fuentes.
-- `motor-eco.js`: reglas y simulaciones E1–E20.
-- `eco-admin-live.js`: acceso RH y eliminación del contenido privado al cerrar sesión.
-- `eco-bridge-client.js`: cliente de transporte con Apps Script; sin contraseñas.
-- `eco-config.js`: la configuración pública mantiene `mode: 'demo'` y `bridgeUrl: ''` hasta verificar la conexión real.
-- `datos-demo.js`: registros sintéticos empleados únicamente en demostración.
+No hay contraseñas, claves de actividades, tokens de sesión ni copias de información de colaboradores en GitHub. El código privado se mantiene fuera de este repositorio. La autorización de RH es independiente de las aplicaciones operativas.
 
-## Activación pendiente
+## Archivos
 
-Requiere desplegar el servicio protegido, comprobar la autorización de RH y facilitar su URL `/exec`. **Nunca** publicar contraseñas ni hojas confidenciales. Una vez probada la conexión, se podrá activar `mode:'live'` en `eco-config.js` y configurar la URL pública del servicio. **Los datos oficiales nunca se copian a GitHub.**
+- `index.html`: interfaz, identidad corporativa y acceso RH.
+- `app-eco.js` y `motor-eco.js`: consulta, diagnóstico, reglas y acciones elegibles.
+- `eco-admin-live.js`: sesión RH, consulta y operaciones autorizadas.
+- `eco-bridge-client.js`: transporte con canal aleatorio y validación de origen.
+- `eco-confirmaciones.js`: formularios de requisitos, adjuntos y lector QR cuando el navegador lo permite.
+- `eco-config.js`: modo real y URL pública del conector; sin secretos.
+- `datos-demo.js`: datos sintéticos de demostración, ajenos a las bases oficiales.
 
-## Observaciones
+## Límites de la validación
 
-En la copia consultada del Plan de Desarrollo ECO, las actividades de reforzamiento están inactivas. El sistema presentará el estado real y advertirá cuando no haya actividades habilitadas para el ciclo. Nunca cambia por sí solo el campo «Activo».
+Fotografías: de 1 a 3 JPG, PNG o WebP, 3 MB cada una. Documento: un PDF, Word o imagen de hasta 5 MB. Se valida formato y firma básica del archivo; no constituye análisis antivirus ni evaluación del contenido. La confirmación del jefe registra la constancia recibida por RH; no suplanta la identidad del jefe ni envía solicitudes automáticas.
 
-Pruebas locales: 26 comprobaciones del backend con datos sintéticos y pruebas de interfaz responsiva en tres tamaños. **No equivale a validación con Sheets reales ni del despliegue público.**
+El escaneo QR depende de BarcodeDetector y permiso de cámara. Cuando no está disponible, puede pegarse el token o enlace leído con la cámara del teléfono. Las claves se verifican en el servidor.
+
+## Pruebas y recuperación
+
+26 pruebas aisladas del backend de gestión aprobadas con datos sintéticos: autorización, asignación, actividad activa, elegibilidad, requisitos, archivos inválidos, duplicados, fórmulas y recuperación de bitácora. Revisión de sintaxis ejecutada. No se registraron cumplimientos reales como prueba. Las pruebas visuales locales no pudieron ejecutarse por falta del navegador de pruebas. La validación operativa completa sigue pendiente.
+
+El historial de commits conserva la interfaz anterior. Apps Script conserva las versiones anteriores del conector. Revertir el código no revierte cumplimientos ya guardados: deben revisarse con su bitácora. Los bloqueos del conector no coordinan operaciones simultáneas iniciadas por otros proyectos Apps Script; se conserva esa limitación de integración.
