@@ -111,7 +111,7 @@
     const cumplimiento = new Map((data.cumplimientos||[]).filter(x=>texto(x.nomina)===key)
       .map(x=>[texto(x.id),{completada:esSi(x.completada),fecha:x.fecha||''}]));
     const aVista=(x,categoria)=>({
-      id:texto(x.id),titulo:String(x.titulo||''),categoria,tipo:String(x.tipo||''),
+      id:texto(x.id),titulo:String(x.titulo||''),categoria,tipo:String(x.tipo||''),tipoValidacion:String(x.tipoValidacion||''),
       elemento:texto(x.elemento),ciclo:cicloValido(x.ciclo)??(categoria==='Reforzamiento'?cfg.ciclo:null),
       completada:cumplimiento.get(texto(x.id))?.completada||false,
       fecha:cumplimiento.get(texto(x.id))?.fecha||''
