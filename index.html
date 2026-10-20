@@ -61,11 +61,11 @@
       <button type="button" data-tab="catalogos"><span class="ico" aria-hidden="true">▦</span>Catálogos de actividades</button>
       <button type="button" data-tab="criterios"><span class="ico" aria-hidden="true">⚙</span>Reglas del motor</button>
     </nav>
-    <div class="sidefoot"><span class="smallState">Solo consulta</span><div>Las simulaciones no guardan asignaciones ni cambian actividades habilitadas o deshabilitadas.</div></div>
+    <div class="sidefoot"><span class="smallState">Gestión RH</span><div>Confirma actividades según sus requisitos. Las simulaciones no modifican registros.</div></div>
   </aside>
   <main>
     <header class="top"><div><div class="eyebrow">Ecosistema de desarrollo</div><h2 id="pageTitle">Motor de diagnóstico</h2><p class="intro" id="pageIntro">Analiza las evaluaciones, compara criterios de asignación y visualiza las actividades correspondientes.</p></div><div class="eco-status-actions"><div id="sourceTag" class="viewtag demo" role="status">Cargando datos...</div><button type="button" id="eco-admin-logout" hidden>Salir de RH</button></div></header>
-    <div class="notice" id="notice"><strong>Ambiente de validación.</strong> No modifica el código operativo ni los registros de Google Sheets. Las actividades deshabilitadas se muestran únicamente como referencia del catálogo.</div>
+    <div class="notice" id="notice"><strong>Ambiente de validación.</strong> El guardado de confirmaciones actualiza el cumplimiento oficial. Las actividades deshabilitadas se muestran únicamente como referencia del catálogo.</div>
     <section id="view-diagnostico">
       <div class="metrics" id="metrics" aria-label="Resumen general"></div>
       <div class="columns">
@@ -96,11 +96,12 @@
       <div class="ruleCard"><h4>Actividades y estado de publicación</h4><p>El Editor Modelo Cultural ECO conserva la responsabilidad del catálogo y de los estados activos/inactivos. El motor selecciona elementos; solo muestra actividades expresamente activas asociadas a esos elementos. Las actividades especiales pueden ser asignadas por RH a una persona, un grupo puntual o a todos, registrando a cada destinatario. Las familiares son invitaciones abiertas para todos y se consultan en su base independiente. No se borran registros de cumplimiento por cambios de disponibilidad.</p></div>
       <p class="footnote">Pendiente técnico antes de producción: confirmar reglas con RH, cotejar código desplegado, definir cómo registrar el ciclo de cada actividad en Sheets y la persistencia por Nómina + Ciclo, revisar roles y autenticación y crear un entorno de pruebas aislado. Este prototipo no resuelve esos puntos todavía.</p>
     </div></div></section>
-    <p class="footnote" id="footerState">Prototipo independiente · Sin operaciones de escritura · No se reemplaza ninguna aplicación existente.</p>
+    <p class="footnote" id="footerState">Prototipo en validación · Confirmaciones con evidencia y bitácora · Sin cambios a otras aplicaciones.</p>
   </main>
 </div>
-<script src="./eco-config.js?v=8b28d2c"></script><script src="./eco-bridge-client.js?v=canal-v2"></script>
-<script src="./eco-admin-live.js"></script>
-<script src="./motor-eco.js"></script><script src="./datos-demo.js"></script><script src="./app-eco.js"></script>
+<script src="./eco-config.js?v=gestion-v05"></script><script src="./eco-bridge-client.js?v=gestion-v05"></script>
+<script src="./eco-admin-live.js?v=gestion-v05"></script>
+<script src="./motor-eco.js?v=gestion-v05"></script><script src="./datos-demo.js?v=gestion-v05"></script><script src="./app-eco.js?v=gestion-v05"></script>
+<script src="./eco-confirmaciones.js?v=gestion-v05"></script>
 </body>
 </html>
