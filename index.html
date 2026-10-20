@@ -25,6 +25,19 @@
     @media(max-width:760px){.sidebar .brand{flex-direction:row;align-items:center;gap:12px;padding-bottom:12px}.sidebar .brandLogo{width:46%;min-width:140px;max-width:230px;min-height:60px;padding:9px 7px}.sidebar .brandTitle{min-width:0;padding:0}.sidebar .brandTitle h1{font-size:14px}}
     @media(max-width:380px){.sidebar .brand{flex-direction:column;align-items:stretch}.sidebar .brandLogo{width:100%;max-width:none;min-height:60px}.sidebar .brandTitle{padding:0}}
   </style>
+<style>
+#view-accesos .ecoAccForm{display:flex;align-items:end;flex-wrap:wrap;gap:10px;margin-bottom:15px}
+#view-accesos .ecoAccForm label{font-weight:650;flex-basis:100%;font-size:14px}
+#view-accesos .ecoAccForm input{min-width:145px;max-width:245px;flex:1;padding:12px;border:1px solid #b8c7ce;border-radius:10px;font:inherit}
+#view-accesos .ecoAccForm button{width:auto;min-width:140px;margin:0;padding:11px 14px;cursor:pointer}
+#view-accesos .ecoAccTabla{width:100%}
+#view-accesos .ecoAccTabla td:last-child{min-width:180px}
+#view-accesos .ecoAccBtn{display:inline-block;padding:7px 9px;margin:3px;border:1px solid #9babb3;border-radius:8px;color:#263e49;background:#fff;font:inherit;font-size:13px;cursor:pointer}
+#view-accesos .ecoAccBtn:hover{background:#edf2f4}
+#view-accesos button:disabled{opacity:.5;cursor:wait}
+#view-accesos .ecoAccHistory{max-height:240px;overflow:auto;padding-left:24px;line-height:1.7;font-size:13px;color:#4b5b64}
+@media(max-width:600px){#view-accesos .ecoAccForm input,#view-accesos .ecoAccForm button{width:100%;max-width:none}}
+</style>
 </head>
 <body>
 <style>
@@ -60,6 +73,7 @@
       <button type="button" class="active" data-tab="diagnostico"><span class="ico" aria-hidden="true">▤</span>Diagnóstico</button>
       <button type="button" data-tab="catalogos"><span class="ico" aria-hidden="true">▦</span>Catálogos de actividades</button>
       <button type="button" data-tab="criterios"><span class="ico" aria-hidden="true">⚙</span>Reglas del motor</button>
+      <button type="button" data-tab="accesos"><span class="ico" aria-hidden="true">♙</span>Administración de accesos</button>
     </nav>
     <div class="sidefoot"><span class="smallState">Gestión RH</span><div>Confirma actividades según sus requisitos. Las simulaciones no modifican registros.</div></div>
   </aside>
@@ -96,6 +110,23 @@
       <div class="ruleCard"><h4>Actividades y estado de publicación</h4><p>El Editor Modelo Cultural ECO conserva la responsabilidad del catálogo y de los estados activos/inactivos. El motor selecciona elementos; solo muestra actividades expresamente activas asociadas a esos elementos. Las actividades especiales pueden ser asignadas por RH a una persona, un grupo puntual o a todos, registrando a cada destinatario. Las familiares son invitaciones abiertas para todos y se consultan en su base independiente. No se borran registros de cumplimiento por cambios de disponibilidad.</p></div>
       <p class="footnote">Pendiente técnico antes de producción: confirmar reglas con RH, cotejar código desplegado, definir cómo registrar el ciclo de cada actividad en Sheets y la persistencia por Nómina + Ciclo, revisar roles y autenticación y crear un entorno de pruebas aislado. Este prototipo no resuelve esos puntos todavía.</p>
     </div></div></section>
+    <section id="view-accesos" class="hidden fullpanel" aria-label="Administración de accesos a Mi Persona ECO">
+      <div class="panel">
+        <div class="phead"><h3>Acceso individual por nómina</h3><p>Recursos Humanos autoriza el acceso a Mi Persona ECO. No modifica actividades, evaluaciones ni cumplimientos.</p></div>
+        <div class="pbody">
+          <form id="ecoAccFormulario" class="ecoAccForm">
+            <label for="ecoAccNomina">Nómina que deseas habilitar</label>
+            <input id="ecoAccNomina" name="nomina" inputmode="numeric" autocomplete="off" maxlength="12" pattern="[0-9]{1,12}" required placeholder="Número de nómina">
+            <button type="submit" class="primary">Habilitar acceso</button>
+            <button type="button" id="ecoAccActualizar" class="secondary">Actualizar listado</button>
+          </form>
+          <p id="ecoAccEstado" role="status" aria-live="polite" class="note">Inicia sesión como RH para administrar accesos.</p>
+          <div class="tableWrap"><table class="catalog-table ecoAccTabla"><thead><tr><th>Nómina</th><th>Colaborador</th><th>Acceso</th><th>Contraseña</th><th>Acciones RH</th></tr></thead><tbody id="ecoAccFilas"><tr><td colspan="5">Consulta los accesos para comenzar.</td></tr></tbody></table></div>
+          <h4>Últimos movimientos administrativos</h4><ol id="ecoAccBitacora" class="ecoAccHistory"></ol>
+          <p class="note">Deshabilitar una nómina revoca sus sesiones, pero conserva su historial. Restablecer contraseña requiere que la persona cree una nueva en Mi Persona ECO. Solo RH puede realizar estos cambios.</p>
+        </div>
+      </div>
+    </section>
     <p class="footnote" id="footerState">Prototipo en validación · Confirmaciones con evidencia y bitácora · Sin cambios a otras aplicaciones.</p>
   </main>
 </div>
@@ -103,5 +134,6 @@
 <script src="./eco-admin-live.js?v=gestion-v05"></script>
 <script src="./motor-eco.js?v=gestion-v05"></script><script src="./datos-demo.js?v=gestion-v05"></script><script src="./app-eco.js?v=gestion-v05"></script>
 <script src="./eco-confirmaciones.js?v=gestion-v05"></script>
+<script src="./eco-accesos.js?v=accesos-v01"></script>
 </body>
 </html>
