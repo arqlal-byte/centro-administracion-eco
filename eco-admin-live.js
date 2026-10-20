@@ -17,6 +17,7 @@
     document.body.classList.add('eco-live-locked');
     const exit=$('eco-admin-logout'); if(exit) exit.hidden=true;
     if(clear && typeof onLogout==='function') onLogout();
+    if(clear) root.dispatchEvent(new Event('eco-admin-logout'));
   }
   async function logout() {
     const previous=token; token=null;
@@ -79,6 +80,7 @@
         lastActivity=Date.now();
         document.body.classList.remove('eco-live-locked');
         if(exit) exit.hidden=false;
+        root.dispatchEvent(new Event('eco-admin-login'));
         status('');error('');
       } catch (e) {
         lock(true);
@@ -92,6 +94,7 @@
     });
     return true;
   }
-  async function request(method,args){if(!token)throw new Error('Inicia sesión como RH.');if(!['adminObtenerRequisitoECO','adminConfirmarActividadECO','adminConsultarDatosECO'].includes(method))throw new Error('Operación no permitida.');lastActivity=Date.now();return root.EcoBridgeClient.invoke(method,[token].concat(args||[]));}
+  async function request(method,args){if(!token)throw new Error('Inicia sesión como RH.');if(!['adminObtenerRequisitoECO','adminConfirmarActividadECO','adminConsultarDatosECO',
+      'adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminRestablecerAccesoECO'].includes(method))throw new Error('Operación no permitida.');lastActivity=Date.now();return root.EcoBridgeClient.invoke(method,[token].concat(args||[]));}
   root.EcoAdminLive={active,start,logout,request};
 })(window);
