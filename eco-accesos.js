@@ -43,10 +43,11 @@ async function load(){
     for(const u of r.usuarios){
       const tr=document.createElement('tr');
       textCell(tr,u.nomina);textCell(tr,u.nombre||'—');
-      textCell(tr,u.habilitado?'Habilitada':'Deshabilitada');
+      textCell(tr,u.bloqueado?'Bloqueada · 3 errores':u.habilitado?'Habilitada':'Deshabilitada');
       textCell(tr,u.conContrasena?'Contraseña creada':'Pendiente de primer acceso');
       const actions=document.createElement('td');
       actions.appendChild(btn(u.habilitado?'Deshabilitar':'Habilitar',()=>operate(u.habilitado?'deshabilitar':'habilitar',u.nomina)));
+      if(u.bloqueado)actions.appendChild(btn('Desbloquear',()=>operate('desbloquear',u.nomina)));
       actions.appendChild(btn('Restablecer contraseña',()=>operate('restablecer',u.nomina)));
       tr.appendChild(actions);rows.appendChild(tr);
     }
@@ -67,6 +68,7 @@ async function operate(action,provided){
   const options={
     habilitar:['adminHabilitarNominaECO','habilitar'],
     deshabilitar:['adminDeshabilitarNominaECO','deshabilitar'],
+    desbloquear:['adminDesbloquearAccesoECO','desbloquear'],
     restablecer:['adminRestablecerAccesoECO','restablecer la contraseña de']
   };
   const choice=options[action];if(!choice)return;
