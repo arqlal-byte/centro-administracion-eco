@@ -100,7 +100,7 @@
         </div>
       </div>
     </section>
-    <section id="view-catalogos" class="hidden fullpanel"><div class="panel"><div class="phead"><h3>Catálogos que administra el Editor</h3><p>Esta pantalla permite revisar estados. No hay controles para habilitar, deshabilitar ni asignar actividades.</p></div><div class="pbody"><div class="seg" id="catalogTabs"><button type="button" class="active" data-catalog="desarrollo">Reforzamiento</button><button type="button" data-catalog="especiales">Especiales</button><button type="button" data-catalog="familiares">Familiares</button></div><div id="catalogSummary" class="note"></div><div class="tableWrap"><table class="catalog-table"><thead><tr><th>ID</th><th>Actividad</th><th>Tipo / Elemento</th><th>Disponibilidad</th></tr></thead><tbody id="catalogBody"></tbody></table></div></div></div></section>
+    <section id="view-catalogos" class="hidden fullpanel"><div class="panel"><div class="phead"><h3>Catálogos que administra el Editor</h3><p>RH puede habilitar y deshabilitar actividades para todos. Las asignaciones y el historial se conservan.</p></div><div class="pbody"><div class="seg" id="catalogTabs"><button type="button" class="active" data-catalog="desarrollo">Reforzamiento</button><button type="button" data-catalog="especiales">Especiales</button><button type="button" data-catalog="familiares">Familiares</button></div><div id="catalogSummary" class="note"></div><div class="tableWrap"><table class="catalog-table"><thead><tr><th>ID</th><th>Actividad</th><th>Tipo / Elemento</th><th>Disponibilidad</th></tr></thead><tbody id="catalogBody"></tbody></table></div></div></div></section>
     <section id="view-criterios" class="hidden"><div class="panel fullpanel"><div class="phead"><h3>Reglas disponibles para comparación</h3><p>Escenarios en memoria. No configuran ni alteran el motor de la aplicación desplegada.</p></div><div class="pbody">
       <div class="ruleCard"><h4>1. Regla confirmada: evaluación por elemento</h4><p>Se revisan individualmente E1 a E20. Por cada elemento con calificación inferior al umbral (inicialmente 4.0) se asignan todas las actividades habilitadas de ese elemento para el ciclo seleccionado. Sin máximo de elementos. Si alguna actividad está inactiva, no aparece; no se sustituye por otra.</p></div>
       <div class="ruleCard"><h4>2. Catálogo por ciclo anual</h4><p>Durante 2026 se toman como catálogo inicial las 20 actividades MANUAL ligadas a E1–E20. En 2027 pueden deshabilitarse y crearse otras distintas, incluso varias por elemento, con identificadores propios. La versión de prueba no elimina actividades históricas y evita trasladar actividades sin ciclo al año siguiente.</p></div>
@@ -130,10 +130,13 @@
     <p class="footnote" id="footerState">Prototipo en validación · Confirmaciones con evidencia y bitácora · Sin cambios a otras aplicaciones.</p>
   </main>
 </div>
-<script src="./eco-config.js?v=gestion-v05"></script><script src="./eco-bridge-client.js?v=gestion-v05"></script>
-<script src="./eco-admin-live.js?v=gestion-v05"></script>
-<script src="./motor-eco.js?v=gestion-v05"></script><script src="./datos-demo.js?v=gestion-v05"></script><script src="./app-eco.js?v=gestion-v05"></script>
-<script src="./eco-confirmaciones.js?v=gestion-v05"></script>
+<script src="./eco-config.js?v=editor-rh-02"></script><script src="./eco-bridge-client.js?v=editor-rh-02"></script>
+<script src="./eco-admin-live.js?v=editor-rh-02"></script>
+<script src="./motor-eco.js?v=editor-rh-02"></script><script src="./datos-demo.js?v=editor-rh-02"></script><script src="./app-eco.js?v=editor-rh-02"></script>
+<script src="./eco-confirmaciones.js?v=editor-rh-02"></script>
 <script src="./eco-accesos.js?v=accesos-v01"></script>
+<script src="./eco-gestion.js?v=editor-rh-02"></script>
+<script src="./eco-editor.js?v=editor-rh-02"></script>
 </body>
 </html>
+

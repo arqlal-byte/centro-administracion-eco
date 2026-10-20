@@ -54,6 +54,7 @@ function renderDetalle(){const nomina=state.persona;const vista=MOTOR.vistaPerso
  if(d.tieneResultados)body+=resumenComparativo((state.datos.resultados||[]).find(r=>String(r.nomina)===String(nomina)&&Number(r.ciclo||2026)===cfg().ciclo));
  body+='<p class="note">De '+e(vista.posiblesRefuerzo)+' actividades de reforzamiento identificadas para los elementos evaluados y el ciclo seleccionado, '+e(vista.refuerzoNoVisible)+' están deshabilitadas. No se sustituyen por otras.</p>';
  body+='<p class="note">Las especiales las asigna RH de manera individual, a grupos seleccionados o a todos, mediante registros por nómina. Las familiares son invitaciones abiertas para todos. Las actividades deshabilitadas no aparecen. Cambiar una simulación no guarda registros; una confirmación requiere revisar su requisito y guardarla expresamente.</p>';
+ if(isReal())body='<button type="button" data-eco-mensaje data-nomina="'+e(persona.nomina)+'" data-nombre="'+e(persona.nombre)+'">Enviar mensaje</button>'+body;
  $('detalle').innerHTML=body;
 }
 function renderCatalog(){const cfgActual=cfg();const arr=state.datos[state.catalog]||[];
@@ -61,8 +62,8 @@ function renderCatalog(){const cfgActual=cfg();const arr=state.datos[state.catal
  const habilitadas=enCiclo.filter(a=>MOTOR.habilitada(a.activo)).length,deshabilitadas=enCiclo.length-habilitadas;
  const adicionales=state.catalog==='desarrollo'?arr.length-enCiclo.length:0;
  const msg={desarrollo:'Catálogo de reforzamiento del ciclo '+cfgActual.ciclo+'. Se incluyen exclusivamente las actividades de ese ciclo; en los registros antiguos sin campo Ciclo, se reconocen inicialmente las 20 actividades MANUAL E1–E20 de 2026. Los registros auxiliares se conservan, pero no se asignan.',especiales:'Actividades especiales: RH elige una persona, un grupo puntual o todos. En los datos actuales esa selección queda registrada por nómina, no mediante un permiso general implícito.',familiares:'Invitaciones familiares abiertas para todos, desde su catálogo independiente, sin asignación personal ni evaluación.'}[state.catalog];
- $('catalogSummary').innerHTML='<strong>'+enCiclo.length+' registradas para esta vista · '+habilitadas+' habilitadas · '+deshabilitadas+' deshabilitadas.'+(adicionales?' · '+adicionales+' fuera de ciclo o catálogo inicial.':'')+'</strong> '+e(msg);
- $('catalogBody').innerHTML=enCiclo.length?enCiclo.map(a=>'<tr><td>'+e(a.id)+'</td><td>'+e(a.titulo)+'</td><td>'+e(a.tipo||'—')+(a.elemento?' · E'+e(a.elemento):'')+(a.ciclo?' · '+e(a.ciclo):'')+'</td><td><span class="state '+(MOTOR.habilitada(a.activo)?'':'off')+'">'+(MOTOR.habilitada(a.activo)?'Habilitada':'Deshabilitada')+'</span></td></tr>').join(''):'<tr><td colspan="4">No hay actividades de este catálogo para el ciclo seleccionado.</td></tr>';
+ $('catalogSummary').innerHTML=(isReal()?'<button type="button" data-eco-nueva data-catalogo="'+e(state.catalog)+'">Nueva actividad</button><br>':'')+'<strong>'+enCiclo.length+' registradas para esta vista · '+habilitadas+' habilitadas · '+deshabilitadas+' deshabilitadas.'+(adicionales?' · '+adicionales+' fuera de ciclo o catálogo inicial.':'')+'</strong> '+e(msg);
+ $('catalogBody').innerHTML=enCiclo.length?enCiclo.map(a=>'<tr><td>'+e(a.id)+'</td><td>'+e(a.titulo)+'</td><td>'+e(a.tipo||'—')+(a.elemento?' · E'+e(a.elemento):'')+(a.ciclo?' · '+e(a.ciclo):'')+'</td><td><span class="state '+(MOTOR.habilitada(a.activo)?'':'off')+'">'+(MOTOR.habilitada(a.activo)?'Habilitada':'Deshabilitada')+'</span>'+(isReal()?'<br><button type="button" data-eco-disponibilidad data-catalogo="'+e(state.catalog)+'" data-id="'+e(a.id)+'" data-titulo="'+e(a.titulo)+'" data-activo="'+MOTOR.habilitada(a.activo)+'">'+(MOTOR.habilitada(a.activo)?'Deshabilitar':'Habilitar')+'</button> <button type="button" data-eco-editar data-catalogo="'+e(state.catalog)+'" data-id="'+e(a.id)+'">Editar</button>':'')+'</td></tr>').join(''):'<tr><td colspan="4">No hay actividades de este catálogo para el ciclo seleccionado.</td></tr>';
  for(const b of document.querySelectorAll('[data-catalog]'))b.classList.toggle('active',b.getAttribute('data-catalog')===state.catalog);
 }
 function tab(name){state.tab=name;document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.getAttribute('data-tab')===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
@@ -94,3 +95,4 @@ async function init(){
 
 init();
 })();
+

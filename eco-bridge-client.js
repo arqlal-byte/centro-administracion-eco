@@ -26,7 +26,7 @@
     'crearContrasenaPersonaECO', 'seleccionarPersonaAdminPersonaECO',
     'cambiarPersonaAdminPersonaECO',
     'adminIniciarSesionECO', 'adminConsultarDatosECO', 'adminCerrarSesionECO','adminObtenerRequisitoECO','adminConfirmarActividadECO',
-    'adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminRestablecerAccesoECO'
+    'adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminRestablecerAccesoECO'
   ]);
   function active() { return CONFIG.mode === 'live' && typeof CONFIG.bridgeUrl === 'string' && !!CONFIG.bridgeUrl; }
   function isBridgeHost(origin) {
@@ -119,3 +119,4 @@
   }
   root.EcoBridgeClient = {active:active,install:install,invoke:invoke,installLegacyGoogleRun:installLegacyGoogleRun};
 })(window);
+
