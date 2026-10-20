@@ -1,9 +1,19 @@
-# Centro de Administración ECO
+# Centro de Administración ECO · aplicación web en GitHub Pages
 
-**Prototipo independiente en validación operativa.** Sitio público de demostración con colaboradores y actividades ficticios; sin conexión a Sheets, Drive ni Apps Script operativos.
+**Estado:** prototipo funcional en validación. Google Sheets seguirá como base oficial; GitHub Pages publica la aplicación y conserva su historial de código.
 
-Permite revisar reglas de diagnóstico E1–E20, ciclos, catálogo y criterios. Asignaciones reales, comunicaciones a colaboradores y permisos administrativos continúan pendientes de implementación y validación.
+**Web:** https://arqlal-byte.github.io/centro-administracion-eco/
 
-**Publicación:** GitHub Pages desde `main` / `(root)`.
+## Estructura
 
-No utilizar información real ni credenciales en este sitio. Las aplicaciones existentes no se modifican.
+- `index.html`, `app-eco.js`, `motor-eco.js`: interfaz y motor de diagnóstico E1–E20, ciclo y reglas confirmadas.
+- `datos-demo.js`: únicamente datos sintéticos para validación visual.
+- `eco-config.js`, `eco-bridge-client.js` y `eco-admin-live.js`: conexión protegida y acceso de RH. Cuando se activa `mode:'live'` con `bridgeUrl`, ninguna nómina se consulta antes de autenticar al administrador.
+
+**La consulta administrativa real está protegida por un usuario y una contraseña establecidos en el backend privado.** La contraseña nunca se envía a GitHub ni se guarda en el navegador de manera persistente. Al cerrar sesión se limpian los datos mostrados.
+
+## Pendientes funcionales
+
+Asignaciones por RH, activación/desactivación de actividades, envío de mensajes, seguimiento histórico por ciclo y validaciones con escritura requieren desarrollo y pruebas específicas, preservando la propiedad de cada hoja. No afirmar que esas operaciones funcionan en la versión actual.
+
+La configuración pública se mantiene en modo demostración hasta habilitar el conector privado. No copiar el backend ni claves al repositorio público.
