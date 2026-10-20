@@ -89,7 +89,7 @@ function start(){
   f.addEventListener('submit',e=>{e.preventDefault();operate('habilitar');});
   $('ecoAccActualizar').addEventListener('click',load);
   root.addEventListener('eco-admin-logout',reset);
-  root.addEventListener('eco-admin-login',()=>{loaded=false;});
+  root.addEventListener('eco-admin-login',()=>{loaded=false;if(!$('view-accesos').classList.contains('hidden'))load();});
 }
 root.EcoAccesos={load,reset};
 start();
