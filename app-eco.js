@@ -67,10 +67,22 @@ for(const b of document.querySelectorAll('[data-catalog]'))b.addEventListener('c
 for(const id of ['modo','umbral','cantidadMenores','ciclo'])$(id).addEventListener('input',()=>{renderConfig();renderMetricas();renderDetalle();renderCatalog();});
 $('busqueda').addEventListener('input',renderPersonas);
 async function init(){
- if(window.location.protocol==='file:'){state.persona=state.datos.personas[0]?.nomina||null;renderAll();return;}
- try{const resp=await fetch('./api/datos',{cache:'no-store'});if(!resp.ok)throw new Error('HTTP '+resp.status);const data=await resp.json();if(!data.datos||!Array.isArray(data.datos.personas))throw new Error('Respuesta incompleta del servidor');state.datos=data.datos;state.modoDatos=data.modo;}
- catch(err){state.error=err.message;state.modoDatos='DATOS_SINTETICOS';}
- state.persona=state.datos.personas[0]?.nomina||null;renderAll();
+ if (window.EcoAdminLive && window.EcoAdminLive.active()) {
+   window.EcoAdminLive.start(function(datos){
+     if(!datos || !Array.isArray(datos.personas)) throw new Error('Respuesta administrativa incompleta.');
+     state.datos=datos;state.error=null;state.modoDatos='GOOGLE_SHEETS_LECTURA';
+     state.persona=datos.personas[0]?.nomina||null;
+     renderAll();
+   },function(){
+     state.datos={personas:[],resultados:[],desarrollo:[],especiales:[],asignaciones:[],cumplimientos:[],familiares:[]};
+     state.persona=null;state.modoDatos='GOOGLE_SHEETS_LECTURA';
+     renderAll();
+   });
+   return;
+ }
+ state.persona=state.datos.personas[0]?.nomina||null;
+ renderAll();
 }
+
 init();
 })();
