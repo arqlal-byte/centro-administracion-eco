@@ -38,13 +38,19 @@
   #eco-admin-access button{width:100%;border:0;background:#984a32;color:white;font:inherit;font-weight:700;padding:14px;margin-top:20px;border-radius:10px;cursor:pointer}
   #eco-admin-access p{font-size:14px;color:#607078}
   #eco-admin-access .eco-error{color:#a52d24!important;min-height:1.4em}
+  .eco-status-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+  #eco-admin-logout[hidden]{display:none!important}
+  #eco-admin-logout{border:1px solid #b9c4c9;background:white;border-radius:9px;padding:9px 12px;color:#243c4a;font-size:12px;font-weight:700}
+  #eco-admin-logout:hover{background:#f2f5f7}
+  #eco-admin-status{color:#3b5564!important;font-size:13px;min-height:1.4em}
+  @media(max-width:760px){.eco-status-actions{justify-content:flex-start}}
 </style>
 <div id="eco-admin-access"><form class="eco-auth-card" id="eco-admin-form">
   <h1 style="font-size:24px;line-height:1.2;margin:0">Centro de Administración ECO</h1>
   <p>Acceso exclusivo de Recursos Humanos. Los datos oficiales requieren autorización.</p>
   <label for="eco-admin-user">Usuario administrador</label><input id="eco-admin-user" required autocomplete="username" autocapitalize="none">
   <label for="eco-admin-pw">Contraseña</label><input id="eco-admin-pw" type="password" required autocomplete="current-password">
-  <button type="submit" id="eco-admin-submit">Ingresar al centro</button><p id="eco-admin-error" class="eco-error" role="alert"></p>
+  <button type="submit" id="eco-admin-submit">Ingresar al centro</button><p id="eco-admin-status" role="status" aria-live="polite"></p><p id="eco-admin-error" class="eco-error" role="alert"></p>
 </form></div>
 
 <div class="app">
@@ -58,7 +64,7 @@
     <div class="sidefoot"><span class="smallState">Solo consulta</span><div>Las simulaciones no guardan asignaciones ni cambian actividades habilitadas o deshabilitadas.</div></div>
   </aside>
   <main>
-    <header class="top"><div><div class="eyebrow">Ecosistema de desarrollo</div><h2 id="pageTitle">Motor de diagnóstico</h2><p class="intro" id="pageIntro">Analiza las evaluaciones, compara criterios de asignación y visualiza las actividades correspondientes.</p></div><div id="sourceTag" class="viewtag demo" role="status">Cargando datos...</div></header>
+    <header class="top"><div><div class="eyebrow">Ecosistema de desarrollo</div><h2 id="pageTitle">Motor de diagnóstico</h2><p class="intro" id="pageIntro">Analiza las evaluaciones, compara criterios de asignación y visualiza las actividades correspondientes.</p></div><div class="eco-status-actions"><div id="sourceTag" class="viewtag demo" role="status">Cargando datos...</div><button type="button" id="eco-admin-logout" hidden>Salir de RH</button></div></header>
     <div class="notice" id="notice"><strong>Ambiente de validación.</strong> No modifica el código operativo ni los registros de Google Sheets. Las actividades deshabilitadas se muestran únicamente como referencia del catálogo.</div>
     <section id="view-diagnostico">
       <div class="metrics" id="metrics" aria-label="Resumen general"></div>
