@@ -133,13 +133,14 @@
 <script src="./eco-eliminar.js?v=gestion-completa-04"></script>
 <script>
 (function(){
-if(new URLSearchParams(location.search).get('ecoDiagnostico')!=='conexion')return;
+var mode=new URLSearchParams(location.search).get('ecoDiagnostico');if(mode!=='conexion'&&mode!=='persona')return;
 var out=document.createElement('pre');out.id='eco-connection-check';out.style.cssText='white-space:pre-wrap;font:13px monospace;color:#172126;background:#fff;padding:16px;border:1px solid #aaa;position:fixed;bottom:8px;left:8px;right:8px;z-index:9999;max-height:45vh;overflow:auto';
 document.body.appendChild(out);var start=Date.now();
 function log(s){out.textContent+=Math.round((Date.now()-start)/1000)+'s '+s+'\n';}
 window.addEventListener('message',function(e){if(e.data&&e.data.ecoBridge==='ECO_V3')log('Mensaje ECO: '+e.data.type+' desde '+e.origin);});
 log('Comprobando transporte sin usuario ni contraseña…');
-EcoBridgeClient.invoke('estadoAccesoPersonaECO',['']).then(function(r){log('TRANSPORTE OK. Respuesta del servicio recibida.');},function(e){log('FALLO: '+e.message);});
+function test(){EcoBridgeClient.invoke('estadoAccesoPersonaECO',['']).then(function(r){log('TRANSPORTE OK. Respuesta del servicio recibida.');},function(e){log('FALLO: '+e.message);});}
+if(mode==='persona'){log('Cargando configuración y cliente exactos de Mi Persona ECO.');var config=document.createElement('script');config.src='/mi-persona-eco/eco-config.js';config.onload=function(){var client=document.createElement('script');client.src='/mi-persona-eco/eco-bridge-client.js';client.onload=test;client.onerror=function(){log('No se pudo cargar cliente Persona.');};document.body.appendChild(client);};config.onerror=function(){log('No se pudo cargar configuración Persona.');};document.body.appendChild(config);}else test();
 })();
 </script>
 </body>
