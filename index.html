@@ -73,6 +73,7 @@
       <button type="button" class="active" data-tab="diagnostico"><span class="ico" aria-hidden="true">▤</span>Diagnóstico</button>
       <button type="button" data-tab="catalogos"><span class="ico" aria-hidden="true">▦</span>Catálogos de actividades</button>
       <button type="button" data-tab="criterios"><span class="ico" aria-hidden="true">⚙</span>Reglas del motor</button>
+      <button type="button" data-tab="mensajes">Mensajes</button>
       <button type="button" data-tab="accesos"><span class="ico" aria-hidden="true">♙</span>Administración de accesos</button>
     </nav>
     <div class="sidefoot"><span class="smallState">Gestión RH</span><div>Confirma actividades según sus requisitos. Las simulaciones no modifican registros.</div></div>
@@ -110,7 +111,8 @@
       <div class="ruleCard"><h4>Actividades y estado de publicación</h4><p>El Editor Modelo Cultural ECO conserva la responsabilidad del catálogo y de los estados activos/inactivos. El motor selecciona elementos; solo muestra actividades expresamente activas asociadas a esos elementos. Las actividades especiales pueden ser asignadas por RH a una persona, un grupo puntual o a todos, registrando a cada destinatario. Las familiares son invitaciones abiertas para todos y se consultan en su base independiente. No se borran registros de cumplimiento por cambios de disponibilidad.</p></div>
       <p class="footnote">Pendiente técnico antes de producción: confirmar reglas con RH, cotejar código desplegado, definir cómo registrar el ciclo de cada actividad en Sheets y la persistencia por Nómina + Ciclo, revisar roles y autenticación y crear un entorno de pruebas aislado. Este prototipo no resuelve esos puntos todavía.</p>
     </div></div></section>
-    <section id="view-accesos" class="hidden fullpanel" aria-label="Administración de accesos a Mi Persona ECO">
+    <section id="view-mensajes" class="hidden fullpanel"><div class="panel"><div class="phead"><h3>Mensajes</h3><p>Comunicación para un colaborador o para todos.</p></div><div class="pbody"><form id="ecoMsgFormulario"><div class="field"><label for="ecoMsgTipo">Destinatario</label><select id="ecoMsgTipo"><option value="nomina">Por nómina</option><option value="todos">Todos los colaboradores</option></select></div><div id="ecoMsgNominaCampo" class="field"><label for="ecoMsgNomina">Colaborador</label><select id="ecoMsgNomina" required></select></div><div class="field"><label for="ecoMsgTexto">Mensaje</label><textarea id="ecoMsgTexto" required maxlength="5000" rows="5" style="width:100%;box-sizing:border-box;font:inherit;padding:12px"></textarea></div><button id="ecoMsgEnviar" type="submit">Enviar mensaje</button></form><div class="separator"></div><h3>Historial de mensajes</h3><div class="field"><label for="ecoMsgFiltro">Consultar por colaborador</label><select id="ecoMsgFiltro"></select><p class="note">Al elegir una nómina se incluyen los mensajes generales y los dirigidos a esa persona según su asignación actual.</p></div><label><input type="checkbox" id="ecoMsgVerRetirados"> Mostrar mensajes retirados</label> <button id="ecoMsgActualizar" type="button">Actualizar historial</button><p id="ecoMsgEstado" role="status" aria-live="polite"></p><div id="ecoMsgLista"></div></div></div></section>
+<section id="view-accesos" class="hidden fullpanel" aria-label="Administración de accesos a Mi Persona ECO">
       <div class="panel">
         <div class="phead"><h3>Acceso individual por nómina</h3><p>Recursos Humanos autoriza el acceso a Mi Persona ECO. No modifica actividades, evaluaciones ni cumplimientos.</p></div>
         <div class="pbody">
@@ -130,13 +132,13 @@
     <p class="footnote" id="footerState">Prototipo en validación · Confirmaciones con evidencia y bitácora · Sin cambios a otras aplicaciones.</p>
   </main>
 </div>
-<script src="./eco-config.js?v=editor-rh-02"></script><script src="./eco-bridge-client.js?v=editor-rh-02"></script>
-<script src="./eco-admin-live.js?v=editor-rh-02"></script>
-<script src="./motor-eco.js?v=editor-rh-02"></script><script src="./datos-demo.js?v=editor-rh-02"></script><script src="./app-eco.js?v=editor-rh-02"></script>
-<script src="./eco-confirmaciones.js?v=editor-rh-02"></script>
+<script src="./eco-config.js?v=mensajes-rh-03"></script><script src="./eco-bridge-client.js?v=mensajes-rh-03"></script>
+<script src="./eco-admin-live.js?v=mensajes-rh-03"></script>
+<script src="./motor-eco.js?v=mensajes-rh-03"></script><script src="./datos-demo.js?v=mensajes-rh-03"></script><script src="./eco-mensajes.js?v=mensajes-rh-03"></script><script src="./app-eco.js?v=mensajes-rh-03"></script>
+<script src="./eco-confirmaciones.js?v=mensajes-rh-03"></script>
 <script src="./eco-accesos.js?v=accesos-v01"></script>
-<script src="./eco-gestion.js?v=editor-rh-02"></script>
-<script src="./eco-editor.js?v=editor-rh-02"></script>
+<script src="./eco-gestion.js?v=mensajes-rh-03"></script>
+<script src="./eco-editor.js?v=mensajes-rh-03"></script>
 </body>
 </html>
 

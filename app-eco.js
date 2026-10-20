@@ -5,7 +5,7 @@ const MOTOR=window.MotorECO;
 const $=id=>document.getElementById(id);
 const e=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const state={datos:window.DatosDemoECO,modoDatos:'DATOS_SINTETICOS',diagnostico:null,persona:null,tab:'diagnostico',catalog:'desarrollo',error:null};
-const titles={diagnostico:['Motor de diagnóstico','Analiza las evaluaciones, compara criterios de asignación y visualiza las actividades correspondientes.'],catalogos:['Catálogos de actividades','Consulta la publicación de actividades del Editor Modelo Cultural y del programa familiar.'],criterios:['Reglas de asignación','Diferencia los criterios documentados y las nuevas alternativas, sin modificar registros.'],accesos:['Administración de accesos','RH autoriza nóminas, deshabilita accesos y restablece contraseñas de Mi Persona ECO.']};
+const titles={mensajes:['Mensajes','Publica mensajes por nómina o para todos y consulta su historial.'],diagnostico:['Motor de diagnóstico','Analiza las evaluaciones, compara criterios de asignación y visualiza las actividades correspondientes.'],catalogos:['Catálogos de actividades','Consulta la publicación de actividades del Editor Modelo Cultural y del programa familiar.'],criterios:['Reglas de asignación','Diferencia los criterios documentados y las nuevas alternativas, sin modificar registros.'],accesos:['Administración de accesos','RH autoriza nóminas, deshabilita accesos y restablece contraseñas de Mi Persona ECO.']};
 function cfg(){return MOTOR.configurar({modo:$('modo').value,umbral:$('umbral').value,cantidadMenores:$('cantidadMenores').value,ciclo:$('ciclo').value});}
 function isReal(){return state.modoDatos==='GOOGLE_SHEETS_LECTURA';}
 function updateSource(){const tag=$('sourceTag');tag.className='viewtag'+(isReal()?'':' demo');tag.textContent=isReal()?'Google Sheets · gestión RH': 'Demostración · datos ficticios';
@@ -54,7 +54,6 @@ function renderDetalle(){const nomina=state.persona;const vista=MOTOR.vistaPerso
  if(d.tieneResultados)body+=resumenComparativo((state.datos.resultados||[]).find(r=>String(r.nomina)===String(nomina)&&Number(r.ciclo||2026)===cfg().ciclo));
  body+='<p class="note">De '+e(vista.posiblesRefuerzo)+' actividades de reforzamiento identificadas para los elementos evaluados y el ciclo seleccionado, '+e(vista.refuerzoNoVisible)+' están deshabilitadas. No se sustituyen por otras.</p>';
  body+='<p class="note">Las especiales las asigna RH de manera individual, a grupos seleccionados o a todos, mediante registros por nómina. Las familiares son invitaciones abiertas para todos. Las actividades deshabilitadas no aparecen. Cambiar una simulación no guarda registros; una confirmación requiere revisar su requisito y guardarla expresamente.</p>';
- if(isReal())body='<button type="button" data-eco-mensaje data-nomina="'+e(persona.nomina)+'" data-nombre="'+e(persona.nombre)+'">Enviar mensaje</button>'+body;
  $('detalle').innerHTML=body;
 }
 function renderCatalog(){const cfgActual=cfg();const arr=state.datos[state.catalog]||[];
@@ -67,8 +66,8 @@ function renderCatalog(){const cfgActual=cfg();const arr=state.datos[state.catal
  for(const b of document.querySelectorAll('[data-catalog]'))b.classList.toggle('active',b.getAttribute('data-catalog')===state.catalog);
 }
 function tab(name){state.tab=name;document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.getAttribute('data-tab')===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
- for(const id of ['diagnostico','catalogos','criterios','accesos'])$('view-'+id).classList.toggle('hidden',name!==id);
- $('pageTitle').textContent=titles[name][0];$('pageIntro').textContent=titles[name][1];if(name==='catalogos')renderCatalog();if(name==='accesos'&&window.EcoAccesos)window.EcoAccesos.load();}
+ for(const id of ['diagnostico','catalogos','criterios','accesos','mensajes'])$('view-'+id).classList.toggle('hidden',name!==id);
+ $('pageTitle').textContent=titles[name][0];$('pageIntro').textContent=titles[name][1];if(name==='mensajes'&&window.EcoMensajes)window.EcoMensajes.load();if(name==='catalogos')renderCatalog();if(name==='accesos'&&window.EcoAccesos)window.EcoAccesos.load();}
 function renderAll(){updateSource();renderConfig();renderMetricas();renderPersonas();renderDetalle();renderCatalog();tab(state.tab);}
 for(const b of document.querySelectorAll('[data-tab]'))b.addEventListener('click',()=>tab(b.getAttribute('data-tab')));
 for(const b of document.querySelectorAll('[data-catalog]'))b.addEventListener('click',()=>{state.catalog=b.getAttribute('data-catalog');renderCatalog();});
@@ -80,7 +79,7 @@ async function init(){
    window.EcoAdminLive.start(function(datos,diagnostico){
      if(!datos || !Array.isArray(datos.personas)) throw new Error('Respuesta administrativa incompleta.');
      state.datos=datos;state.diagnostico=diagnostico;state.error=null;state.modoDatos='GOOGLE_SHEETS_LECTURA';
-     state.persona=datos.personas[0]?.nomina||null;
+     state.persona=datos.personas[0]?.nomina||null;if(window.EcoMensajes)window.EcoMensajes.setPeople(datos.personas);
      renderAll();
    },function(){
      state.datos={personas:[],resultados:[],desarrollo:[],especiales:[],asignaciones:[],cumplimientos:[],familiares:[]};

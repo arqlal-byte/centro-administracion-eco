@@ -26,7 +26,7 @@
     'crearContrasenaPersonaECO', 'seleccionarPersonaAdminPersonaECO',
     'cambiarPersonaAdminPersonaECO',
     'adminIniciarSesionECO', 'adminConsultarDatosECO', 'adminCerrarSesionECO','adminObtenerRequisitoECO','adminConfirmarActividadECO',
-    'adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminRestablecerAccesoECO'
+    'adminPublicarMensajeECO','adminHistorialMensajesECO','adminEstadoMensajeECO','adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminRestablecerAccesoECO'
   ]);
   function active() { return CONFIG.mode === 'live' && typeof CONFIG.bridgeUrl === 'string' && !!CONFIG.bridgeUrl; }
   function isBridgeHost(origin) {
