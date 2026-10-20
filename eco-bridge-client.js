@@ -13,9 +13,8 @@
   var readyPromise = null;
   var pending = new Map();
   var sequence = 0;
-  var channel = Array.from(crypto.getRandomValues(new Uint8Array(32)), b=>b.toString(16).padStart(2,'0')).join('');
-  var endpoint = null;
-  var endpointOrigin = null;
+  var channel=Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
+  var endpoint=null,endpointOrigin=null;
   var allowedMethods = new Set([
     'estadoAccesoPersonaECO', 'iniciarSesionPersonaECO', 'estadoSesionPersonaECO',
     'cerrarSesionPersonaECO', 'obtenerPersonaECO', 'consultarPerfilECO',
@@ -26,7 +25,7 @@
     'guardarEvidenciaDocumentalPersonaECO', 'marcarMensajeLeidoPersonaECO',
     'crearContrasenaPersonaECO', 'seleccionarPersonaAdminPersonaECO',
     'cambiarPersonaAdminPersonaECO',
-    'adminIniciarSesionECO', 'adminConsultarDatosECO', 'adminCerrarSesionECO'
+    'adminIniciarSesionECO', 'adminConsultarDatosECO', 'adminCerrarSesionECO','adminObtenerRequisitoECO','adminConfirmarActividadECO'
   ]);
   function active() { return CONFIG.mode === 'live' && typeof CONFIG.bridgeUrl === 'string' && !!CONFIG.bridgeUrl; }
   function isBridgeHost(origin) {
@@ -50,7 +49,7 @@
     bridge.setAttribute('aria-hidden', 'true');
     bridge.setAttribute('referrerpolicy', 'no-referrer');
     bridge.style.cssText = 'position:absolute!important;width:0!important;height:0!important;border:0!important;opacity:0!important;pointer-events:none!important;';
-    bridge.src = url + '?ecoChannel=' + channel;
+    bridge.src=url+'?ecoChannel='+channel;
     frame = bridge;
     document.body.appendChild(frame);
     readyPromise = new Promise(function(resolve, reject){
@@ -58,13 +57,12 @@
     });
     // El iframe sólo puede responder desde dominios de Google verificados.
     root.addEventListener('message', function (evt) {
-      if (!isBridgeHost(evt.origin)) return;
-      if (endpoint && (evt.source !== endpoint || evt.origin !== endpointOrigin)) return;
+      if(!isBridgeHost(evt.origin))return;
+      if(endpoint&&(evt.source!==endpoint||evt.origin!==endpointOrigin))return;
       var msg = evt.data;
-      if (!msg || msg.ecoBridge !== 'ECO_V3' || msg.channel !== channel) return;
-      if (msg.type === 'ready') {
-        if (!evt.source) return;
-        endpoint = evt.source; endpointOrigin = evt.origin;
+      if(!msg||msg.ecoBridge!=='ECO_V3'||msg.channel!==channel)return;
+      if(msg.type==='ready'){
+        if(!evt.source)return;endpoint=evt.source;endpointOrigin=evt.origin;
         ready = true;
         root.__ecoBridgeReady.resolve();
         return;
