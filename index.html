@@ -38,7 +38,7 @@
 #view-accesos .ecoAccHistory{max-height:240px;overflow:auto;padding-left:24px;line-height:1.7;font-size:13px;color:#4b5b64}
 @media(max-width:600px){#view-accesos .ecoAccForm input,#view-accesos .ecoAccForm button{width:100%;max-width:none}}
 </style>
-</head>
+<style>.ecoCatalogSelectors[hidden]{display:none}.ecoCatalogSelectors{display:grid;gap:18px;grid-template-columns:1fr 2fr;padding:18px;background:#f5f7f8;border:1px solid #e1e7eb;border-radius:12px}.ecoCatalogSelectors .field{margin:0}.ecoCatalogCards{display:grid;gap:16px;margin-top:18px}.ecoActivityCard{border:1px solid #dce4e8;border-left:4px solid #26806a;border-radius:12px;padding:20px;background:#fff}.ecoActivityOff{border-left-color:#a6afb5;background:#f8f9fa}.ecoActivityHead{display:flex;justify-content:space-between;gap:18px;align-items:start}.ecoActivityHead h4{font-size:17px;margin:7px 0;white-space:pre-wrap}.ecoActivityHead small{color:#687a85}.ecoActivityCover{width:150px;height:95px;object-fit:cover;border-radius:9px;margin-top:14px}.ecoActivityActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.ecoActivityActions button,.ecoCatalogPrimary{padding:10px 13px;border:1px solid #bdcbd3;border-radius:8px;background:white;color:#243c4a;font:inherit;cursor:pointer}.ecoActivityActions .ecoActivityDelete{color:#b52a3c;border-color:#e4b7bf}.ecoCatalogPrimary{background:#ca2737;color:white;border-color:#ca2737}.ecoActivityCard summary{cursor:pointer;color:#226c91;font-weight:650}@media(max-width:760px){.ecoCatalogSelectors{grid-template-columns:1fr}.ecoActivityHead{flex-wrap:wrap}.ecoActivityActions button{flex:1}}</style></head>
 <body>
 <style>
   body.eco-live-locked>.app {display:none!important}
@@ -72,7 +72,6 @@
     <nav class="nav" aria-label="Navegación principal">
       <button type="button" class="active" data-tab="diagnostico"><span class="ico" aria-hidden="true">▤</span>Diagnóstico</button>
       <button type="button" data-tab="catalogos"><span class="ico" aria-hidden="true">▦</span>Catálogos de actividades</button>
-      <button type="button" data-tab="criterios"><span class="ico" aria-hidden="true">⚙</span>Reglas del motor</button>
       <button type="button" data-tab="mensajes">Mensajes</button>
       <button type="button" data-tab="accesos"><span class="ico" aria-hidden="true">♙</span>Administración de accesos</button>
     </nav>
@@ -101,16 +100,8 @@
         </div>
       </div>
     </section>
-    <section id="view-catalogos" class="hidden fullpanel"><div class="panel"><div class="phead"><h3>Catálogos que administra el Editor</h3><p>RH puede habilitar y deshabilitar actividades para todos. Las asignaciones y el historial se conservan.</p></div><div class="pbody"><div class="seg" id="catalogTabs"><button type="button" class="active" data-catalog="desarrollo">Reforzamiento</button><button type="button" data-catalog="especiales">Especiales</button><button type="button" data-catalog="familiares">Familiares</button></div><div id="catalogSummary" class="note"></div><div class="tableWrap"><table class="catalog-table"><thead><tr><th>ID</th><th>Actividad</th><th>Tipo / Elemento</th><th>Disponibilidad</th></tr></thead><tbody id="catalogBody"></tbody></table></div></div></div></section>
-    <section id="view-criterios" class="hidden"><div class="panel fullpanel"><div class="phead"><h3>Reglas disponibles para comparación</h3><p>Escenarios en memoria. No configuran ni alteran el motor de la aplicación desplegada.</p></div><div class="pbody">
-      <div class="ruleCard"><h4>1. Regla confirmada: evaluación por elemento</h4><p>Se revisan individualmente E1 a E20. Por cada elemento con calificación inferior al umbral (inicialmente 4.0) se asignan todas las actividades habilitadas de ese elemento para el ciclo seleccionado. Sin máximo de elementos. Si alguna actividad está inactiva, no aparece; no se sustituye por otra.</p></div>
-      <div class="ruleCard"><h4>2. Catálogo por ciclo anual</h4><p>Durante 2026 se toman como catálogo inicial las 20 actividades MANUAL ligadas a E1–E20. En 2027 pueden deshabilitarse y crearse otras distintas, incluso varias por elemento, con identificadores propios. La versión de prueba no elimina actividades históricas y evita trasladar actividades sin ciclo al año siguiente.</p></div>
-      <div class="ruleCard"><h4>3. Alternativa pendiente: menores calificaciones</h4><p>Prioriza los N elementos con calificaciones más bajas del instrumento, sin exigir que la competencia esté bajo un umbral. Inicialmente N = 3. En empates, la simulación toma el número de elemento ascendente; este desempate debe ser aprobado antes de volverse operativo.</p></div>
-      <div class="ruleCard"><h4>4. Criterio documental anterior, solo referencia</h4><p>La copia documental de Persona ECO aplica un criterio basado en promedios por competencia y selecciona un máximo de 5 o 3 elementos. Se conserva en este prototipo únicamente para contrastarlo; no debe regir el nuevo motor.</p></div>
-      <div class="ruleCard"><h4>Destinatarios: RH e invitaciones familiares</h4><p>Las especiales son seleccionadas manualmente por RH para una persona, un grupo explícito o todos; la lista de destinatarios se almacena por nómina. Las familiares son invitaciones abiertas para todas las familias, independientes del diagnóstico y sin estatus obligatorio de cumplimiento.</p></div>
-      <div class="ruleCard"><h4>Actividades y estado de publicación</h4><p>El Editor Modelo Cultural ECO conserva la responsabilidad del catálogo y de los estados activos/inactivos. El motor selecciona elementos; solo muestra actividades expresamente activas asociadas a esos elementos. Las actividades especiales pueden ser asignadas por RH a una persona, un grupo puntual o a todos, registrando a cada destinatario. Las familiares son invitaciones abiertas para todos y se consultan en su base independiente. No se borran registros de cumplimiento por cambios de disponibilidad.</p></div>
-      <p class="footnote">Pendiente técnico antes de producción: confirmar reglas con RH, cotejar código desplegado, definir cómo registrar el ciclo de cada actividad en Sheets y la persistencia por Nómina + Ciclo, revisar roles y autenticación y crear un entorno de pruebas aislado. Este prototipo no resuelve esos puntos todavía.</p>
-    </div></div></section>
+    <section id="view-catalogos" class="hidden fullpanel"><div class="panel"><div class="phead"><h3>Catálogos de actividades</h3><p>Selecciona competencia y comportamiento para administrar sus actividades, como en el Editor Modelo Cultural.</p></div><div class="pbody"><div class="seg"><button type="button" class="active" data-catalog="desarrollo">Reforzamiento</button><button type="button" data-catalog="especiales">Especiales</button><button type="button" data-catalog="familiares">Familiares</button></div><div id="catalogSelectors" class="ecoCatalogSelectors"><div class="field"><label for="catalogCompetencia">COMPETENCIA</label><select id="catalogCompetencia"></select></div><div class="field"><label for="catalogComportamiento">COMPORTAMIENTO</label><select id="catalogComportamiento"></select></div></div><h3 id="catalogComportamientoTitulo"></h3><div id="catalogSummary" class="note"></div><div id="catalogCards" class="ecoCatalogCards"></div></div></div></section>
+    <section id="view-criterios" class="hidden" hidden></section>
     <section id="view-mensajes" class="hidden fullpanel"><div class="panel"><div class="phead"><h3>Mensajes</h3><p>Comunicación para un colaborador o para todos.</p></div><div class="pbody"><form id="ecoMsgFormulario"><div class="field"><label for="ecoMsgTipo">Destinatario</label><select id="ecoMsgTipo"><option value="nomina">Por nómina</option><option value="todos">Todos los colaboradores</option></select></div><div id="ecoMsgNominaCampo" class="field"><label for="ecoMsgNomina">Colaborador</label><select id="ecoMsgNomina" required></select></div><div class="field"><label for="ecoMsgTexto">Mensaje</label><textarea id="ecoMsgTexto" required maxlength="5000" rows="5" style="width:100%;box-sizing:border-box;font:inherit;padding:12px"></textarea></div><button id="ecoMsgEnviar" type="submit">Enviar mensaje</button></form><div class="separator"></div><h3>Historial de mensajes</h3><div class="field"><label for="ecoMsgFiltro">Consultar por colaborador</label><select id="ecoMsgFiltro"></select><p class="note">Al elegir una nómina se incluyen los mensajes generales y los dirigidos a esa persona según su asignación actual.</p></div><label><input type="checkbox" id="ecoMsgVerRetirados"> Mostrar mensajes retirados</label> <button id="ecoMsgActualizar" type="button">Actualizar historial</button><p id="ecoMsgEstado" role="status" aria-live="polite"></p><div id="ecoMsgLista"></div></div></div></section>
 <section id="view-accesos" class="hidden fullpanel" aria-label="Administración de accesos a Mi Persona ECO">
       <div class="panel">
@@ -132,13 +123,14 @@
     <p class="footnote" id="footerState">Prototipo en validación · Confirmaciones con evidencia y bitácora · Sin cambios a otras aplicaciones.</p>
   </main>
 </div>
-<script src="./eco-config.js?v=mensajes-rh-03"></script><script src="./eco-bridge-client.js?v=mensajes-rh-03"></script>
-<script src="./eco-admin-live.js?v=mensajes-rh-03"></script>
-<script src="./motor-eco.js?v=mensajes-rh-03"></script><script src="./datos-demo.js?v=mensajes-rh-03"></script><script src="./eco-mensajes.js?v=mensajes-rh-03"></script><script src="./app-eco.js?v=mensajes-rh-03"></script>
-<script src="./eco-confirmaciones.js?v=mensajes-rh-03"></script>
+<script src="./eco-config.js?v=gestion-completa-04"></script><script src="./eco-bridge-client.js?v=gestion-completa-04"></script>
+<script src="./eco-admin-live.js?v=gestion-completa-04"></script>
+<script src="./motor-eco.js?v=gestion-completa-04"></script><script src="./datos-demo.js?v=gestion-completa-04"></script><script src="./eco-mensajes.js?v=gestion-completa-04"></script><script src="./app-eco.js?v=gestion-completa-04"></script>
+<script src="./eco-confirmaciones.js?v=gestion-completa-04"></script>
 <script src="./eco-accesos.js?v=accesos-v01"></script>
-<script src="./eco-gestion.js?v=mensajes-rh-03"></script>
-<script src="./eco-editor.js?v=mensajes-rh-03"></script>
+<script src="./eco-gestion.js?v=gestion-completa-04"></script>
+<script src="./eco-editor.js?v=gestion-completa-04"></script>
+<script src="./eco-eliminar.js?v=gestion-completa-04"></script>
 </body>
 </html>
 

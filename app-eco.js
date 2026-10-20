@@ -56,13 +56,28 @@ function renderDetalle(){const nomina=state.persona;const vista=MOTOR.vistaPerso
  body+='<p class="note">Las especiales las asigna RH de manera individual, a grupos seleccionados o a todos, mediante registros por nómina. Las familiares son invitaciones abiertas para todos. Las actividades deshabilitadas no aparecen. Cambiar una simulación no guarda registros; una confirmación requiere revisar su requisito y guardarla expresamente.</p>';
  $('detalle').innerHTML=body;
 }
-function renderCatalog(){const cfgActual=cfg();const arr=state.datos[state.catalog]||[];
- const enCiclo = state.catalog==='desarrollo'?arr.filter(a=>MOTOR.actividadesParaCiclo(a,cfgActual)):arr;
- const habilitadas=enCiclo.filter(a=>MOTOR.habilitada(a.activo)).length,deshabilitadas=enCiclo.length-habilitadas;
- const adicionales=state.catalog==='desarrollo'?arr.length-enCiclo.length:0;
- const msg={desarrollo:'Catálogo de reforzamiento del ciclo '+cfgActual.ciclo+'. Se incluyen exclusivamente las actividades de ese ciclo; en los registros antiguos sin campo Ciclo, se reconocen inicialmente las 20 actividades MANUAL E1–E20 de 2026. Los registros auxiliares se conservan, pero no se asignan.',especiales:'Actividades especiales: RH elige una persona, un grupo puntual o todos. En los datos actuales esa selección queda registrada por nómina, no mediante un permiso general implícito.',familiares:'Invitaciones familiares abiertas para todos, desde su catálogo independiente, sin asignación personal ni evaluación.'}[state.catalog];
- $('catalogSummary').innerHTML=(isReal()?'<button type="button" data-eco-nueva data-catalogo="'+e(state.catalog)+'">Nueva actividad</button><br>':'')+'<strong>'+enCiclo.length+' registradas para esta vista · '+habilitadas+' habilitadas · '+deshabilitadas+' deshabilitadas.'+(adicionales?' · '+adicionales+' fuera de ciclo o catálogo inicial.':'')+'</strong> '+e(msg);
- $('catalogBody').innerHTML=enCiclo.length?enCiclo.map(a=>'<tr><td>'+e(a.id)+'</td><td>'+e(a.titulo)+'</td><td>'+e(a.tipo||'—')+(a.elemento?' · E'+e(a.elemento):'')+(a.ciclo?' · '+e(a.ciclo):'')+'</td><td><span class="state '+(MOTOR.habilitada(a.activo)?'':'off')+'">'+(MOTOR.habilitada(a.activo)?'Habilitada':'Deshabilitada')+'</span>'+(isReal()?'<br><button type="button" data-eco-disponibilidad data-catalogo="'+e(state.catalog)+'" data-id="'+e(a.id)+'" data-titulo="'+e(a.titulo)+'" data-activo="'+MOTOR.habilitada(a.activo)+'">'+(MOTOR.habilitada(a.activo)?'Deshabilitar':'Habilitar')+'</button> <button type="button" data-eco-editar data-catalogo="'+e(state.catalog)+'" data-id="'+e(a.id)+'">Editar</button>':'')+'</td></tr>').join(''):'<tr><td colspan="4">No hay actividades de este catálogo para el ciclo seleccionado.</td></tr>';
+function renderCatalog(){
+ const c=cfg(),all=state.datos[state.catalog]||[],development=state.catalog==='desarrollo';
+ const elements=(state.datos.elementosCatalogo||[]).length?state.datos.elementosCatalogo:Array.from(new Map((state.datos.desarrollo||[]).map(a=>[String(a.elemento),{numero:String(a.elemento),competencia:a.competencia,objetivo:a.comportamiento||'Comportamiento '+a.elemento}])).values());
+ const comps=Array.from(new Set(elements.map(x=>x.competencia).filter(Boolean)));
+ if(!comps.includes(state.catalogCompetencia))state.catalogCompetencia=comps[0]||'';
+ const group=elements.filter(x=>x.competencia===state.catalogCompetencia).sort((a,b)=>Number(a.numero)-Number(b.numero));
+ if(!group.some(x=>x.numero===state.catalogElemento))state.catalogElemento=group[0]?.numero||'';
+ const current=group.find(x=>x.numero===state.catalogElemento);
+ $('catalogSelectors').hidden=!development;
+ $('catalogCompetencia').innerHTML=comps.map(x=>'<option '+(x===state.catalogCompetencia?'selected':'')+'>'+e(x)+'</option>').join('');
+ $('catalogComportamiento').innerHTML=group.map(x=>'<option value="'+e(x.numero)+'" '+(x.numero===state.catalogElemento?'selected':'')+'>E'+e(x.numero)+' · '+e(x.objetivo)+'</option>').join('');
+ $('catalogComportamientoTitulo').textContent=development?(current?.objetivo||'Selecciona un comportamiento'):state.catalog==='especiales'?'Actividades especiales RH':'Actividades familiares';
+ const arr=development?all.filter(a=>String(a.elemento)===state.catalogElemento&&(a.ciclo===null||a.ciclo===undefined||Number(a.ciclo)===c.ciclo)):all;
+ const active=arr.filter(a=>MOTOR.habilitada(a.activo)).length;
+ $('catalogSummary').innerHTML=(isReal()?'<button class="ecoCatalogPrimary" type="button" data-eco-nueva data-catalogo="'+e(state.catalog)+'" '+(development?'data-elemento="'+e(state.catalogElemento)+'"':'')+'>Nueva actividad</button>':'')+'<p>'+arr.length+' actividades · '+active+' habilitadas · '+(arr.length-active)+' deshabilitadas'+(development?' · Ciclo '+c.ciclo:'')+'</p>';
+ $('catalogCards').innerHTML=arr.length?arr.map(a=>{
+ const enabled=MOTOR.habilitada(a.activo),attrs=' data-catalogo="'+e(state.catalog)+'" data-id="'+e(a.id)+'"';
+ const validCycle=!development||MOTOR.actividadesParaCiclo(a,c);
+ const done=(state.datos.cumplimientos||[]).filter(x=>String(x.id)===String(a.id)&&MOTOR.habilitada(x.completada)).length;
+ const status=enabled?'Habilitada':'Deshabilitada';
+ return '<article class="ecoActivityCard '+(enabled?'':'ecoActivityOff')+'"><div class="ecoActivityHead"><div><div class="eyebrow">'+e(a.tipo|| (state.catalog==='familiares'?'Invitación familiar':'Actividad'))+'</div><h4>'+e(a.titulo)+'</h4><small>'+e(a.id)+(development?' · '+e(a.origen||'MANUAL'):'')+'</small></div><span class="state '+(enabled?'':'off')+'">'+status+'</span></div>'+(a.imagenPortada?'<img class="ecoActivityCover" src="'+e(a.imagenPortada)+'" alt="Portada de la actividad" loading="lazy">':'')+'<p class="note">'+done+' registros de cumplimiento'+(!validCycle?' · Recurso auxiliar: no se asigna automáticamente en este ciclo.':'')+'</p><details><summary>Ver detalles</summary><p style="white-space:pre-wrap">'+e(a.descripcion||'Sin descripción registrada.')+'</p><p>Validación: '+e(a.tipoValidacion||'Sin validación configurada')+'</p>'+(a.fecha?'<p>Fecha límite: '+e(a.fecha)+'</p>':'')+(/^https:\/\//i.test(a.url||'')?'<a href="'+e(a.url)+'" target="_blank" rel="noopener noreferrer">Abrir recurso</a>':'')+'</details>'+(isReal()?'<div class="ecoActivityActions"><button type="button" data-eco-editar'+attrs+'>Editar actividad</button><button type="button" data-eco-disponibilidad'+attrs+' data-titulo="'+e(a.titulo)+'" data-activo="'+enabled+'">'+(enabled?'Deshabilitar':'Habilitar')+'</button><button type="button" class="ecoActivityDelete" data-eco-eliminar'+attrs+'>Eliminar actividad</button></div>':'')+'</article>';
+ }).join(''):'<div class="empty">No hay actividades para este comportamiento y ciclo. Puedes crear una con Nueva actividad.</div>';
  for(const b of document.querySelectorAll('[data-catalog]'))b.classList.toggle('active',b.getAttribute('data-catalog')===state.catalog);
 }
 function tab(name){state.tab=name;document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.getAttribute('data-tab')===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
@@ -73,6 +88,8 @@ for(const b of document.querySelectorAll('[data-tab]'))b.addEventListener('click
 for(const b of document.querySelectorAll('[data-catalog]'))b.addEventListener('click',()=>{state.catalog=b.getAttribute('data-catalog');renderCatalog();});
 for(const id of ['modo','umbral','cantidadMenores','ciclo'])$(id).addEventListener('input',()=>{renderConfig();renderMetricas();renderDetalle();renderCatalog();});
 $('busqueda').addEventListener('input',renderPersonas);
+$('catalogCompetencia').addEventListener('change',()=>{state.catalogCompetencia=$('catalogCompetencia').value;state.catalogElemento='';renderCatalog();});
+$('catalogComportamiento').addEventListener('change',()=>{state.catalogElemento=$('catalogComportamiento').value;renderCatalog();});
 window.addEventListener('eco-confirmacion-guardada',async()=>{try{const r=await window.EcoAdminLive.request('adminConsultarDatosECO',[]);state.datos=r.datos;state.diagnostico=r.diagnostico;renderAll();}catch(err){state.error=err.message;updateSource();}});
 async function init(){
  if (window.EcoAdminLive && window.EcoAdminLive.active()) {
