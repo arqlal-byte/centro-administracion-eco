@@ -4,15 +4,22 @@
 const MOTOR=window.MotorECO;
 const $=id=>document.getElementById(id);
 const e=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const state={datos:window.DatosDemoECO,modoDatos:'DATOS_SINTETICOS',persona:null,tab:'diagnostico',catalog:'desarrollo',error:null};
+const state={datos:window.DatosDemoECO,modoDatos:'DATOS_SINTETICOS',diagnostico:null,persona:null,tab:'diagnostico',catalog:'desarrollo',error:null};
 const titles={diagnostico:['Motor de diagnóstico','Analiza las evaluaciones, compara criterios de asignación y visualiza las actividades correspondientes.'],catalogos:['Catálogos de actividades','Consulta la publicación de actividades del Editor Modelo Cultural y del programa familiar.'],criterios:['Reglas de asignación','Diferencia los criterios documentados y las nuevas alternativas, sin modificar registros.']};
 function cfg(){return MOTOR.configurar({modo:$('modo').value,umbral:$('umbral').value,cantidadMenores:$('cantidadMenores').value,ciclo:$('ciclo').value});}
 function isReal(){return state.modoDatos==='GOOGLE_SHEETS_LECTURA';}
-function updateSource(){const tag=$('sourceTag');tag.className='viewtag'+(isReal()?'':' demo');tag.textContent=isReal()?'Google Sheets · consulta': 'Demostración · datos ficticios';
+function updateSource(){const tag=$('sourceTag');tag.className='viewtag'+(isReal()?'':' demo');tag.textContent=isReal()?'Google Sheets · lectura autenticada': 'Demostración · datos ficticios';
  const aviso=$('notice');aviso.innerHTML=isReal()
- ? '<strong>Conexión de consulta activa.</strong> Se muestran datos procedentes de Google Sheets. El prototipo corre localmente; no permite modificar estados, asignaciones ni cumplimientos. No publicarlo sin autenticación, control de acceso y auditoría.'
+ ? '<strong>Consulta autenticada activa.</strong> Información oficial de Google Sheets. Solo lectura: no se modifican actividades, asignaciones ni cumplimientos.'
  : '<strong>Datos ficticios.</strong> Esta demostración utiliza registros sintéticos: no muestra resultados reales de colaboradores ni modifica Google Sheets. Las cifras difieren de las bases operativas.';
- if(state.error){aviso.innerHTML+='<div style="margin-top:7px;color:#a43d36">La conexión no pudo establecerse: '+e(state.error)+'. Se usa la demostración.</div>';}}
+ if(isReal()) {
+   const d=state.diagnostico||{};
+   const fecha=d.consultadoEn?new Date(d.consultadoEn).toLocaleString('es-MX'):'';
+   if(fecha) aviso.innerHTML+='<div style="margin-top:7px">Consulta realizada: <strong>'+e(fecha)+'</strong> · Ciclo publicado: '+e(d.ciclo||2026)+'</div>';
+   const warnings=Array.isArray(d.advertencias)?d.advertencias:[];
+   warnings.forEach(w=>{aviso.innerHTML+='<div style="margin-top:8px;color:#8b451c">'+e(w)+'</div>';});
+ }
+ if(state.error){aviso.innerHTML+='<div style="margin-top:7px;color:#a43d36">La conexión no pudo establecerse: '+e(state.error)+'. No se muestran datos reales.</div>';}}
 function renderMetricas(){let s=MOTOR.resumen(state.datos,cfg());let values=[
  [s.personas,'Personas del catálogo','Catálogo de identidad'],
  [s.conResultados,'Con evaluación publicada','Ciclo '+cfg().ciclo],
@@ -68,14 +75,14 @@ for(const id of ['modo','umbral','cantidadMenores','ciclo'])$(id).addEventListen
 $('busqueda').addEventListener('input',renderPersonas);
 async function init(){
  if (window.EcoAdminLive && window.EcoAdminLive.active()) {
-   window.EcoAdminLive.start(function(datos){
+   window.EcoAdminLive.start(function(datos,diagnostico){
      if(!datos || !Array.isArray(datos.personas)) throw new Error('Respuesta administrativa incompleta.');
-     state.datos=datos;state.error=null;state.modoDatos='GOOGLE_SHEETS_LECTURA';
+     state.datos=datos;state.diagnostico=diagnostico;state.error=null;state.modoDatos='GOOGLE_SHEETS_LECTURA';
      state.persona=datos.personas[0]?.nomina||null;
      renderAll();
    },function(){
      state.datos={personas:[],resultados:[],desarrollo:[],especiales:[],asignaciones:[],cumplimientos:[],familiares:[]};
-     state.persona=null;state.modoDatos='GOOGLE_SHEETS_LECTURA';
+     state.persona=null;state.diagnostico=null;state.modoDatos='GOOGLE_SHEETS_LECTURA';
      renderAll();
    });
    return;
