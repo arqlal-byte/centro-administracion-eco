@@ -95,7 +95,7 @@ function resumenCumplimientoActividadECO_(a,categoria,habilitada,indice,registro
  let cumplidos=0;
  if(asignados)for(const nomina of asignados)if(completadas?.get(nomina)===true)cumplidos++;
  const porcentaje=total?Math.round(cumplidos*100/total):null;
- const etiqueta=categoria==='desarrollo'?'Personas aplicables (E<4)':'Personas asignadas por RH';
+ const etiqueta=categoria==='desarrollo'?'Personas aplicables (E&lt;4)':'Personas asignadas por RH';
  return '<div class="ecoActivityStats" aria-label="Indicadores de cumplimiento del ciclo 2026">'+
   '<span><strong>'+total+'</strong> '+etiqueta+'</span>'+
   '<span><strong>'+cumplidos+'</strong> cumplidos</span>'+
@@ -129,7 +129,6 @@ function renderCatalog(){
  $('catalogSummary').innerHTML=(isReal()?'<button class="ecoCatalogPrimary" type="button" data-eco-nueva data-catalogo="'+e(state.catalog)+'" '+(development?'data-elemento="'+e(state.catalogElemento)+'"':'')+'>Nueva actividad</button>':'')+'<p>'+arr.length+' actividades · '+active+' habilitadas · '+(arr.length-active)+' deshabilitadas'+(development?' · Ciclo '+c.ciclo:'')+'</p>';
  $('catalogCards').innerHTML=arr.length?arr.map(a=>{
  const enabled=MOTOR.habilitada(a.activo),attrs=' data-catalogo="'+e(state.catalog)+'" data-id="'+e(a.id)+'"';
- const validCycle=!development||MOTOR.actividadesParaCiclo(a,c);
  const done=cumplimientoPorId.get(String(a.id))||0;
  const status=enabled?'Habilitada':'Deshabilitada';
  return '<article class="ecoActivityCard '+(enabled?'':'ecoActivityOff')+'"><div class="ecoActivityHead"><div><div class="eyebrow">'+e(a.tipo|| (state.catalog==='familiares'?'Invitación familiar':'Actividad'))+'</div><h4>'+e(a.titulo)+'</h4><small>'+e(a.id)+(development?' · '+e(a.origen||'MANUAL'):'')+'</small></div><span class="state '+(enabled?'':'off')+'">'+status+'</span></div>'+(a.imagenPortada?'<img class="ecoActivityCover" src="'+e(a.imagenPortada)+'" alt="Portada de la actividad" loading="lazy">':'')+resumenCumplimientoActividadECO_(a,state.catalog,enabled,indices,done)+'<details><summary>Ver detalles</summary><p style="white-space:pre-wrap">'+e(a.descripcion||'Sin descripción registrada.')+'</p><p>Validación: '+e(a.tipoValidacion||'Sin validación configurada')+'</p>'+(a.fecha?'<p>Fecha límite: '+e(a.fecha)+'</p>':'')+(/^https:\/\//i.test(a.url||'')?'<a href="'+e(a.url)+'" target="_blank" rel="noopener noreferrer">Abrir recurso</a>':'')+'</details>'+(isReal()?'<div class="ecoActivityActions">'+(state.catalog==='especiales'?'<button type="button" class="eco-especial-btn" data-eco-asignar-especial="'+e(a.id)+'">Asignar líderes</button><button type="button" class="eco-especial-btn" data-eco-asistencia-especial="'+e(a.id)+'">Registrar asistencia</button>':'')+'<button type="button" data-eco-editar'+attrs+'>Editar actividad</button><button type="button" data-eco-disponibilidad'+attrs+' data-titulo="'+e(a.titulo)+'" data-activo="'+enabled+'">'+(enabled?'Deshabilitar':'Habilitar')+'</button><button type="button" class="ecoActivityDelete" data-eco-eliminar'+attrs+'>Eliminar actividad</button></div>':'')+'</article>';
