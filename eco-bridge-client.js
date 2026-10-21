@@ -26,7 +26,9 @@
     'crearContrasenaPersonaECO', 'seleccionarPersonaAdminPersonaECO',
     'cambiarPersonaAdminPersonaECO',
     'adminIniciarSesionECO', 'adminConsultarDatosECO', 'adminCerrarSesionECO','adminObtenerRequisitoECO','adminConfirmarActividadECO',
-    'adminRevisarEliminacionActividadECO','adminEliminarActividadECO','adminPublicarMensajeECO','adminHistorialMensajesECO','adminEstadoMensajeECO','adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminDesbloquearAccesoECO','adminRestablecerAccesoECO'
+    'adminRevisarEliminacionActividadECO','adminEliminarActividadECO','adminPublicarMensajeECO','adminHistorialMensajesECO','adminEstadoMensajeECO','adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminDesbloquearAccesoECO','adminRestablecerAccesoECO',
+    'adminCandidatosActividadEspecialECO','adminGuardarAsignacionEspecialECO',
+    'adminObtenerAsistenciaEspecialECO','adminGuardarAsistenciaEspecialECO'
   ]);
   function active() { return CONFIG.mode === 'live' && typeof CONFIG.bridgeUrl === 'string' && !!CONFIG.bridgeUrl; }
   function isBridgeHost(origin) {
