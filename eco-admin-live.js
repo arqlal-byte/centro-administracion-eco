@@ -95,7 +95,7 @@
     return true;
   }
   async function request(method,args){if(!token)throw new Error('Inicia sesión como RH.');if(!['adminObtenerRequisitoECO','adminConfirmarActividadECO','adminConsultarDatosECO',
-      'adminRevisarEliminacionActividadECO','adminEliminarActividadECO','adminPublicarMensajeECO','adminHistorialMensajesECO','adminEstadoMensajeECO','adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminDesbloquearAccesoECO','adminRestablecerAccesoECO','adminCandidatosActividadEspecialECO','adminGuardarAsignacionEspecialECO','adminObtenerAsistenciaEspecialECO','adminGuardarAsistenciaEspecialECO'].includes(method))throw new Error('Operación no permitida.');lastActivity=Date.now();return root.EcoBridgeClient.invoke(method,[token].concat(args||[]));}
+      'adminRevisarEliminacionActividadECO','adminEliminarActividadECO','adminResumenDestinatariosMensajeECO','adminPublicarMensajeECO','adminHistorialMensajesECO','adminEstadoMensajeECO','adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminDesbloquearAccesoECO','adminRestablecerAccesoECO','adminCandidatosActividadEspecialECO','adminGuardarAsignacionEspecialECO','adminObtenerAsistenciaEspecialECO','adminGuardarAsistenciaEspecialECO'].includes(method))throw new Error('Operación no permitida.');lastActivity=Date.now();return root.EcoBridgeClient.invoke(method,[token].concat(args||[]));}
   root.EcoAdminLive={active,start,logout,request};
 })(window);
 
