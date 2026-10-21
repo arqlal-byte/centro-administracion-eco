@@ -70,24 +70,54 @@ function renderCatalog(){
  $('catalogComportamientoTitulo').textContent=development?(current?.objetivo||'Selecciona un comportamiento'):state.catalog==='especiales'?'Actividades especiales RH':'Actividades familiares';
  const arr=development?all.filter(a=>String(a.elemento)===state.catalogElemento&&(a.ciclo===null||a.ciclo===undefined||Number(a.ciclo)===c.ciclo)):all;
  const active=arr.filter(a=>MOTOR.habilitada(a.activo)).length;
+ // Evita revisar todos los cumplimientos por cada actividad del catálogo.
+ const cumplimientoPorId=new Map();
+ for(const x of (state.datos.cumplimientos||[])){
+  if(!MOTOR.habilitada(x.completada))continue;
+  const id=String(x.id);
+  cumplimientoPorId.set(id,(cumplimientoPorId.get(id)||0)+1);
+ }
  $('catalogSummary').innerHTML=(isReal()?'<button class="ecoCatalogPrimary" type="button" data-eco-nueva data-catalogo="'+e(state.catalog)+'" '+(development?'data-elemento="'+e(state.catalogElemento)+'"':'')+'>Nueva actividad</button>':'')+'<p>'+arr.length+' actividades · '+active+' habilitadas · '+(arr.length-active)+' deshabilitadas'+(development?' · Ciclo '+c.ciclo:'')+'</p>';
  $('catalogCards').innerHTML=arr.length?arr.map(a=>{
  const enabled=MOTOR.habilitada(a.activo),attrs=' data-catalogo="'+e(state.catalog)+'" data-id="'+e(a.id)+'"';
  const validCycle=!development||MOTOR.actividadesParaCiclo(a,c);
- const done=(state.datos.cumplimientos||[]).filter(x=>String(x.id)===String(a.id)&&MOTOR.habilitada(x.completada)).length;
+ const done=cumplimientoPorId.get(String(a.id))||0;
  const status=enabled?'Habilitada':'Deshabilitada';
  return '<article class="ecoActivityCard '+(enabled?'':'ecoActivityOff')+'"><div class="ecoActivityHead"><div><div class="eyebrow">'+e(a.tipo|| (state.catalog==='familiares'?'Invitación familiar':'Actividad'))+'</div><h4>'+e(a.titulo)+'</h4><small>'+e(a.id)+(development?' · '+e(a.origen||'MANUAL'):'')+'</small></div><span class="state '+(enabled?'':'off')+'">'+status+'</span></div>'+(a.imagenPortada?'<img class="ecoActivityCover" src="'+e(a.imagenPortada)+'" alt="Portada de la actividad" loading="lazy">':'')+'<p class="note">'+done+' registros de cumplimiento'+(!validCycle?' · Recurso auxiliar: no se asigna automáticamente en este ciclo.':'')+'</p><details><summary>Ver detalles</summary><p style="white-space:pre-wrap">'+e(a.descripcion||'Sin descripción registrada.')+'</p><p>Validación: '+e(a.tipoValidacion||'Sin validación configurada')+'</p>'+(a.fecha?'<p>Fecha límite: '+e(a.fecha)+'</p>':'')+(/^https:\/\//i.test(a.url||'')?'<a href="'+e(a.url)+'" target="_blank" rel="noopener noreferrer">Abrir recurso</a>':'')+'</details>'+(isReal()?'<div class="ecoActivityActions">'+(state.catalog==='especiales'?'<button type="button" class="eco-especial-btn" data-eco-asignar-especial="'+e(a.id)+'">Asignar líderes</button><button type="button" class="eco-especial-btn" data-eco-asistencia-especial="'+e(a.id)+'">Registrar asistencia</button>':'')+'<button type="button" data-eco-editar'+attrs+'>Editar actividad</button><button type="button" data-eco-disponibilidad'+attrs+' data-titulo="'+e(a.titulo)+'" data-activo="'+enabled+'">'+(enabled?'Deshabilitar':'Habilitar')+'</button><button type="button" class="ecoActivityDelete" data-eco-eliminar'+attrs+'>Eliminar actividad</button></div>':'')+'</article>';
  }).join(''):'<div class="empty">No hay actividades para este comportamiento y ciclo. Puedes crear una con Nueva actividad.</div>';
  for(const b of document.querySelectorAll('[data-catalog]'))b.classList.toggle('active',b.getAttribute('data-catalog')===state.catalog);
 }
-function tab(name){state.tab=name;document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.getAttribute('data-tab')===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
+function tab(name){
+ if(name!=='diagnostico'&&busquedaTimer!==null){clearTimeout(busquedaTimer);busquedaTimer=null;}
+ state.tab=name;document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.getAttribute('data-tab')===name;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
  for(const id of ['diagnostico','catalogos','criterios','accesos','mensajes'])$('view-'+id).classList.toggle('hidden',name!==id);
- $('pageTitle').textContent=titles[name][0];$('pageIntro').textContent=titles[name][1];if(name==='mensajes'&&window.EcoMensajes)window.EcoMensajes.load();if(name==='catalogos')renderCatalog();if(name==='accesos'&&window.EcoAccesos)window.EcoAccesos.load();}
-function renderAll(){updateSource();renderConfig();renderMetricas();renderPersonas();renderDetalle();renderCatalog();tab(state.tab);}
+ $('pageTitle').textContent=titles[name][0];$('pageIntro').textContent=titles[name][1];
+ if(name==='diagnostico'){renderMetricas();renderPersonas();renderDetalle();}
+ if(name==='mensajes'&&window.EcoMensajes)window.EcoMensajes.load();
+ if(name==='catalogos')renderCatalog();
+ if(name==='accesos'&&window.EcoAccesos)window.EcoAccesos.load();
+}
+let busquedaTimer=null;
+function renderAll(){
+ if(busquedaTimer!==null){clearTimeout(busquedaTimer);busquedaTimer=null;}
+ updateSource();renderConfig();
+ // Al cambiar de pestaña se renderiza únicamente la vista que se abre.
+ tab(state.tab);
+}
 for(const b of document.querySelectorAll('[data-tab]'))b.addEventListener('click',()=>tab(b.getAttribute('data-tab')));
 for(const b of document.querySelectorAll('[data-catalog]'))b.addEventListener('click',()=>{state.catalog=b.getAttribute('data-catalog');renderCatalog();});
-for(const id of ['modo','umbral','cantidadMenores','ciclo'])$(id).addEventListener('input',()=>{renderConfig();renderMetricas();renderDetalle();renderCatalog();});
-$('busqueda').addEventListener('input',renderPersonas);
+for(const id of ['modo','umbral','cantidadMenores','ciclo'])$(id).addEventListener('input',()=>{
+ renderConfig();
+ if(state.tab==='diagnostico'){renderMetricas();renderPersonas();renderDetalle();}
+ else if(state.tab==='catalogos')renderCatalog();
+});
+$('busqueda').addEventListener('input',()=>{
+ if(busquedaTimer!==null)clearTimeout(busquedaTimer);
+ busquedaTimer=setTimeout(()=>{
+  busquedaTimer=null;
+  if(state.tab==='diagnostico')renderPersonas();
+ },160);
+});
 $('catalogCompetencia').addEventListener('change',()=>{state.catalogCompetencia=$('catalogCompetencia').value;state.catalogElemento='';renderCatalog();});
 $('catalogComportamiento').addEventListener('change',()=>{state.catalogElemento=$('catalogComportamiento').value;renderCatalog();});
 window.addEventListener('eco-confirmacion-guardada',async()=>{try{const r=await window.EcoAdminLive.request('adminConsultarDatosECO',[]);state.datos=r.datos;state.diagnostico=r.diagnostico;renderAll();}catch(err){state.error=err.message;updateSource();}});
