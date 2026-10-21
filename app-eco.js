@@ -172,13 +172,13 @@ $('busqueda').addEventListener('input',()=>{
 });
 $('catalogCompetencia').addEventListener('change',()=>{state.catalogCompetencia=$('catalogCompetencia').value;state.catalogElemento='';renderCatalog();});
 $('catalogComportamiento').addEventListener('change',()=>{state.catalogElemento=$('catalogComportamiento').value;renderCatalog();});
-window.addEventListener('eco-confirmacion-guardada',async()=>{try{const r=await window.EcoAdminLive.request('adminConsultarDatosECO',[]);state.datos=r.datos;state.diagnostico=r.diagnostico;renderAll();}catch(err){state.error=err.message;updateSource();}});
+window.addEventListener('eco-confirmacion-guardada',async()=>{try{const r=await window.EcoAdminLive.request('adminConsultarDatosECO',[]);state.datos=r.datos;state.diagnostico=r.diagnostico;if(window.EcoMensajes)window.EcoMensajes.setCatalogos(state.datos);renderAll();}catch(err){state.error=err.message;updateSource();}});
 async function init(){
  if (window.EcoAdminLive && window.EcoAdminLive.active()) {
    window.EcoAdminLive.start(function(datos,diagnostico){
      if(!datos || !Array.isArray(datos.personas)) throw new Error('Respuesta administrativa incompleta.');
      state.datos=datos;state.diagnostico=diagnostico;state.error=null;state.modoDatos='GOOGLE_SHEETS_LECTURA';
-     state.persona=datos.personas[0]?.nomina||null;if(window.EcoMensajes)window.EcoMensajes.setPeople(datos.personas);
+     state.persona=datos.personas[0]?.nomina||null;if(window.EcoMensajes)window.EcoMensajes.setCatalogos(datos);
      renderAll();
    },function(){
      state.datos={personas:[],resultados:[],desarrollo:[],especiales:[],asignaciones:[],cumplimientos:[],familiares:[]};
