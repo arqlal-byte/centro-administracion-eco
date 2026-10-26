@@ -38,7 +38,33 @@
 #view-accesos .ecoAccHistory{max-height:240px;overflow:auto;padding-left:24px;line-height:1.7;font-size:13px;color:#4b5b64}
 @media(max-width:600px){#view-accesos .ecoAccForm input,#view-accesos .ecoAccForm button{width:100%;max-width:none}}
 </style>
-<style>.ecoCatalogSelectors[hidden]{display:none}.ecoCatalogSelectors{display:grid;gap:18px;grid-template-columns:1fr 2fr;padding:18px;background:#f5f7f8;border:1px solid #e1e7eb;border-radius:12px}.ecoCatalogSelectors .field{margin:0}.ecoCatalogCards{display:grid;gap:16px;margin-top:18px}.ecoActivityCard{border:1px solid #dce4e8;border-left:4px solid #26806a;border-radius:12px;padding:20px;background:#fff}.ecoActivityOff{border-left-color:#a6afb5;background:#f8f9fa}.ecoActivityHead{display:flex;justify-content:space-between;gap:18px;align-items:start}.ecoActivityHead h4{font-size:17px;margin:7px 0;white-space:pre-wrap}.ecoActivityHead small{color:#687a85}.ecoActivityCover{width:150px;height:95px;object-fit:cover;border-radius:9px;margin-top:14px}.ecoActivityActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.ecoActivityActions button,.ecoCatalogPrimary{padding:10px 13px;border:1px solid #bdcbd3;border-radius:8px;background:white;color:#243c4a;font:inherit;cursor:pointer}.ecoActivityActions .ecoActivityDelete{color:#b52a3c;border-color:#e4b7bf}.ecoCatalogPrimary{background:#ca2737;color:white;border-color:#ca2737}.ecoActivityCard summary{cursor:pointer;color:#226c91;font-weight:650}.ecoActivityStats{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 9px}.ecoActivityStats span{background:#f2f6f7;border:1px solid #e0e8ec;border-radius:8px;padding:9px 11px;font-size:12px;color:#415762}.ecoActivityStats strong{font-size:17px;color:#192b37;margin-right:4px;font-variant-numeric:tabular-nums}.ecoActivityProgress{height:8px;border-radius:999px;background:#e4ecec;overflow:hidden;margin:8px 0}.ecoActivityProgress span{display:block;height:100%;background:#26806a;border-radius:999px}.ecoActivityStatsHint{font-size:11px;line-height:1.5;color:#687a85;margin:7px 0 11px}@media(max-width:760px){.ecoCatalogSelectors{grid-template-columns:1fr}.ecoActivityHead{flex-wrap:wrap}.ecoActivityActions button{flex:1}}</style></head>
+<style>.ecoCatalogSelectors[hidden]{display:none}.ecoCatalogSelectors{display:grid;gap:18px;grid-template-columns:1fr 2fr;padding:18px;background:#f5f7f8;border:1px solid #e1e7eb;border-radius:12px}.ecoCatalogSelectors .field{margin:0}.ecoCatalogCards{display:grid;gap:16px;margin-top:18px}.ecoActivityCard{border:1px solid #dce4e8;border-left:4px solid #26806a;border-radius:12px;padding:20px;background:#fff}.ecoActivityOff{border-left-color:#a6afb5;background:#f8f9fa}.ecoActivityHead{display:flex;justify-content:space-between;gap:18px;align-items:start}.ecoActivityHead h4{font-size:17px;margin:7px 0;white-space:pre-wrap}.ecoActivityHead small{color:#687a85}.ecoActivityCover{width:150px;height:95px;object-fit:cover;border-radius:9px;margin-top:14px}.ecoActivityActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.ecoActivityActions button,.ecoCatalogPrimary{padding:10px 13px;border:1px solid #bdcbd3;border-radius:8px;background:white;color:#243c4a;font:inherit;cursor:pointer}.ecoActivityActions .ecoActivityDelete{color:#b52a3c;border-color:#e4b7bf}.ecoCatalogPrimary{background:#ca2737;color:white;border-color:#ca2737}.ecoActivityCard summary{cursor:pointer;color:#226c91;font-weight:650}.ecoActivityStats{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 9px}.ecoActivityStats span{background:#f2f6f7;border:1px solid #e0e8ec;border-radius:8px;padding:9px 11px;font-size:12px;color:#415762}.ecoActivityStats strong{font-size:17px;color:#192b37;margin-right:4px;font-variant-numeric:tabular-nums}.ecoActivityProgress{height:8px;border-radius:999px;background:#e4ecec;overflow:hidden;margin:8px 0}.ecoActivityProgress span{display:block;height:100%;background:#26806a;border-radius:999px}.ecoActivityStatsHint{font-size:11px;line-height:1.5;color:#687a85;margin:7px 0 11px}@media(max-width:760px){.ecoCatalogSelectors{grid-template-columns:1fr}.ecoActivityHead{flex-wrap:wrap}.ecoActivityActions button{flex:1}}</style><style>
+/* ECO Accesos · estados semánticos legibles en escritorio y móvil */
+#view-accesos .ecoAccNav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+#view-accesos .ecoAccNavButton,#view-accesos .ecoAccRefresh{width:auto;min-width:0;margin:0;padding:10px 14px;border:1px solid #b7c8d0;border-radius:10px;background:#fff;color:#253e4a;font:inherit;cursor:pointer}
+#view-accesos .ecoAccNavButton[aria-pressed="true"]{background:#e4f0f5;border-color:#39748e;font-weight:700}
+#view-accesos .ecoAccCount{display:inline-block;background:#e2b74e;color:#3e2d00;border-radius:999px;padding:2px 9px;margin-left:5px;font-weight:800}
+#view-accesos .ecoAccRefresh{margin-left:auto}
+#view-accesos .ecoAccStatus{display:inline-flex;align-items:center;border-radius:999px;padding:5px 10px;font-size:13px;font-weight:750;white-space:nowrap}
+#view-accesos .ecoAccStatus.ecoAcc-warning{background:#fff0c2;color:#694b00}
+#view-accesos .ecoAccStatus.ecoAcc-success{background:#dcf4e4;color:#146034}
+#view-accesos .ecoAccStatus.ecoAcc-danger{background:#fde2df;color:#8e271f}
+#view-accesos .ecoAccStatus.ecoAcc-neutral{background:#edf0f3;color:#4e5b64}
+#view-accesos .ecoAccTabla{width:100%}
+#view-accesos .ecoAccTabla td:last-child{min-width:185px}
+#view-accesos .ecoAccBtn{width:auto;min-width:0;display:inline-flex;align-items:center;justify-content:center;margin:3px;padding:9px 12px;border-radius:9px;border:1px solid transparent;font-size:13px;font-weight:750;cursor:pointer;line-height:1.35}
+#view-accesos .ecoAccBtn.ecoAcc-success{background:#16834b;color:white;border-color:#0c6035}
+#view-accesos .ecoAccBtn.ecoAcc-danger{background:#bd342c;color:white;border-color:#8e1f19}
+#view-accesos .ecoAccBtn.ecoAcc-warning{background:#f0c351;color:#392b04;border-color:#bf8d22}
+#view-accesos .ecoAccBtn.ecoAcc-neutral{background:#e8eff3;color:#264655;border-color:#bacbd2}
+#view-accesos .ecoAccManage summary{cursor:pointer;color:#24566d;font-weight:650;padding:8px 0}
+#view-accesos .ecoAccManageActions{display:flex;gap:5px;flex-wrap:wrap;padding:7px 0}
+#view-accesos .ecoAccHistoryWrap{margin-top:16px}
+#view-accesos .ecoAccHistoryWrap summary{cursor:pointer;font-weight:650;color:#38586a}
+#view-accesos button:disabled{opacity:.55;cursor:wait}
+@media(max-width:600px){#view-accesos .ecoAccRefresh{margin-left:0}#view-accesos .ecoAccNavButton{flex:1}#view-accesos .ecoAccBtn{padding:9px 10px}}
+</style>
+</head>
 <body>
 <style>
   body.eco-live-locked>.app {display:none!important}
@@ -104,22 +130,22 @@
     <section id="view-criterios" class="hidden" hidden></section>
     <section id="view-mensajes" class="hidden fullpanel"><div class="panel"><div class="phead"><h3>Mensajes</h3><p>Comunicación de RH por nómina, área, actividad especial o para todos.</p></div><div class="pbody"><form id="ecoMsgFormulario"><div class="field"><label for="ecoMsgTipo">Destinatario</label><select id="ecoMsgTipo"><option value="nomina">Por nómina</option><option value="area">Por área</option><option value="actividad">Por actividad especial</option><option value="todos">Todos los colaboradores</option></select></div><div id="ecoMsgNominaCampo" class="field"><label for="ecoMsgNomina">Colaborador</label><select id="ecoMsgNomina" required></select></div><div id="ecoMsgAreaCampo" class="field" hidden><label for="ecoMsgArea">Área</label><select id="ecoMsgArea"></select></div><div id="ecoMsgActividadCampo" class="field" hidden><label for="ecoMsgActividad">Actividad especial</label><select id="ecoMsgActividad"></select></div><p class="note" id="ecoMsgPrevia" aria-live="polite">Selecciona destinatarios para consultar el alcance antes de publicar.</p><div class="field"><label for="ecoMsgTexto">Mensaje</label><textarea id="ecoMsgTexto" required maxlength="5000" rows="5" style="width:100%;box-sizing:border-box;font:inherit;padding:12px"></textarea></div><button id="ecoMsgEnviar" type="submit">Enviar mensaje</button></form><div class="separator"></div><h3>Historial de mensajes</h3><div class="field"><label for="ecoMsgFiltro">Consultar por colaborador</label><select id="ecoMsgFiltro"></select><p class="note">Al elegir una nómina se incluyen los mensajes generales y los dirigidos a esa persona según su asignación actual.</p></div><label><input type="checkbox" id="ecoMsgVerRetirados"> Mostrar mensajes retirados</label> <button id="ecoMsgActualizar" type="button">Actualizar historial</button><p id="ecoMsgEstado" role="status" aria-live="polite"></p><div id="ecoMsgLista"></div></div></div></section>
 <section id="view-accesos" class="hidden fullpanel" aria-label="Administración de accesos a Mi Persona ECO">
-      <div class="panel">
-        <div class="phead"><h3>Acceso individual por nómina</h3><p>Recursos Humanos autoriza el acceso a Mi Persona ECO. No modifica actividades, evaluaciones ni cumplimientos.</p></div>
-        <div class="pbody">
-          <form id="ecoAccFormulario" class="ecoAccForm">
-            <label for="ecoAccNomina">Nómina que deseas habilitar</label>
-            <input id="ecoAccNomina" name="nomina" inputmode="numeric" autocomplete="off" maxlength="12" pattern="[0-9]{1,12}" required placeholder="Número de nómina">
-            <button type="submit" class="primary">Habilitar acceso</button>
-            <button type="button" id="ecoAccActualizar" class="secondary">Actualizar listado</button>
-          </form>
-          <p id="ecoAccEstado" role="status" aria-live="polite" class="note">Inicia sesión como RH para administrar accesos.</p>
-          <div class="tableWrap"><table class="catalog-table ecoAccTabla"><thead><tr><th>Nómina</th><th>Colaborador</th><th>Acceso</th><th>Contraseña</th><th>Acciones RH</th></tr></thead><tbody id="ecoAccFilas"><tr><td colspan="5">Consulta los accesos para comenzar.</td></tr></tbody></table></div>
-          <h4>Últimos movimientos administrativos</h4><ol id="ecoAccBitacora" class="ecoAccHistory"></ol>
-          <p class="note">Deshabilitar una nómina revoca sus sesiones, pero conserva su historial. Restablecer contraseña requiere que la persona cree una nueva en Mi Persona ECO. Solo RH puede realizar estos cambios.</p>
-        </div>
-      </div>
-    </section>
+ <div class="panel">
+  <div class="phead"><h3>Solicitudes y accesos</h3><p>Recursos Humanos verifica la identidad y autoriza el ingreso a Mi Persona ECO.</p></div>
+  <div class="pbody">
+   <div class="ecoAccNav" role="group" aria-label="Vistas de acceso">
+    <button id="ecoAccTabPendientes" type="button" aria-pressed="true" class="ecoAccNavButton">Solicitudes pendientes <span id="ecoAccPendientes" class="ecoAccCount">0</span></button>
+    <button id="ecoAccTabCuentas" type="button" aria-pressed="false" class="ecoAccNavButton">Cuentas registradas</button>
+    <button id="ecoAccActualizar" type="button" class="ecoAccRefresh">Actualizar</button>
+   </div>
+   <p id="ecoAccVistaAyuda" class="note">Autoriza únicamente cuando Recursos Humanos haya verificado la identidad.</p>
+   <p id="ecoAccEstado" role="status" aria-live="polite" class="note">Inicia sesión como RH para revisar solicitudes.</p>
+   <div class="tableWrap"><table class="catalog-table ecoAccTabla"><thead><tr><th>Nómina</th><th>Colaborador</th><th>Estado</th><th>Acciones RH</th></tr></thead><tbody id="ecoAccFilas"><tr><td colspan="4">Consulta las solicitudes para comenzar.</td></tr></tbody></table></div>
+   <details class="ecoAccHistoryWrap"><summary>Ver historial de movimientos</summary><ol id="ecoAccBitacora" class="ecoAccHistory"></ol></details>
+   <p class="note">Deshabilitar impide el acceso sin borrar su contraseña. Restablecer elimina la contraseña anterior para crear otra. Estas opciones aparecen dentro de «Administrar cuenta».</p>
+  </div>
+ </div>
+</section>
     <p class="footnote" id="footerState">Prototipo en validación · Confirmaciones con evidencia y bitácora · Sin cambios a otras aplicaciones.</p>
   </main>
 </div>
@@ -127,7 +153,7 @@
 <script src="./eco-admin-live.js?v=mensajeria-segmentada-20261021-01"></script>
 <script src="./motor-eco.js?v=seguridad-3-intentos-05"></script><script src="./datos-demo.js?v=seguridad-3-intentos-05"></script><script src="./eco-mensajes.js?v=mensajeria-segmentada-20261021-01"></script><script src="./app-eco.js?v=mensajeria-segmentada-20261021-01"></script>
 <script src="./eco-confirmaciones.js?v=seguridad-3-intentos-05"></script>
-<script src="./eco-accesos.js?v=seguridad-3-intentos-05"></script>
+<script src="./eco-accesos.js?v=rh-colores-simple-20261026-01"></script>
 <script src="./eco-gestion.js?v=seguridad-3-intentos-05"></script>
 <script src="./eco-editor.js?v=seguridad-3-intentos-05"></script>
 <script src="./eco-especiales.js?v=asignaciones-asistencia-preparado-01"></script>
