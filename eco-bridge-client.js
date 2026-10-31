@@ -26,7 +26,7 @@
     'crearContrasenaPersonaECO', 'seleccionarPersonaAdminPersonaECO',
     'cambiarPersonaAdminPersonaECO',
     'adminIniciarSesionECO', 'adminConsultarDatosECO', 'adminCerrarSesionECO','adminObtenerRequisitoECO','adminConfirmarActividadECO',
-    'adminRevisarEliminacionActividadECO','adminEliminarActividadECO','adminResumenDestinatariosMensajeECO','adminPublicarMensajeECO','adminHistorialMensajesECO','adminEstadoMensajeECO','adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminDesbloquearAccesoECO','adminRestablecerAccesoECO','adminRechazarSolicitudAccesoECO',
+    'adminRevisarEliminacionActividadECO','adminEliminarActividadECO','adminResumenDestinatariosMensajeECO','adminPublicarMensajeECO','adminHistorialMensajesECO','adminEstadoMensajeECO','eco2CapacidadesMensajeriaRH','eco2PublicarMensajeECO','eco2HistorialMensajesRH','eco2ConfirmacionesMensajeRH','adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminDesbloquearAccesoECO','adminRestablecerAccesoECO','adminRechazarSolicitudAccesoECO',
     'adminCandidatosActividadEspecialECO','adminGuardarAsignacionEspecialECO',
     'adminObtenerAsistenciaEspecialECO','adminGuardarAsistenciaEspecialECO'
   ]);
