@@ -28,7 +28,7 @@
     'adminIniciarSesionECO', 'adminConsultarDatosECO', 'adminCerrarSesionECO','adminObtenerRequisitoECO','adminConfirmarActividadECO',
     'adminRevisarEliminacionActividadECO','adminEliminarActividadECO','adminResumenDestinatariosMensajeECO','adminPublicarMensajeECO','adminHistorialMensajesECO','adminEstadoMensajeECO','adminLeerActividadECO','adminGuardarActividadECO','adminEnviarMensajeECO','adminCambiarDisponibilidadECO','adminListarAccesosECO','adminHabilitarNominaECO','adminDeshabilitarNominaECO','adminDesbloquearAccesoECO','adminRestablecerAccesoECO','adminRechazarSolicitudAccesoECO',
     'adminCandidatosActividadEspecialECO','adminGuardarAsignacionEspecialECO',
-    'adminObtenerAsistenciaEspecialECO','adminGuardarAsistenciaEspecialECO'
+    'adminObtenerAsistenciaEspecialECO','adminGuardarAsistenciaEspecialECO','adminGenerarEnlaceDelegadoECO'
   ]);
   function active() { return CONFIG.mode === 'live' && typeof CONFIG.bridgeUrl === 'string' && !!CONFIG.bridgeUrl; }
   function isBridgeHost(origin) {
